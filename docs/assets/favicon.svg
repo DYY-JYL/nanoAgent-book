@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="nanoAgent">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f2430" />
+      <stop offset="100%" stop-color="#b24c2a" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#f7efe2" />
+  <rect x="14" y="14" width="100" height="100" rx="22" fill="url(#g)" />
+  <path d="M37 84V44h16l24 24V44h14v40H75L51 60v24H37z" fill="#fff7ef" />
+</svg>

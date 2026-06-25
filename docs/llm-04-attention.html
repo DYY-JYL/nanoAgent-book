@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM 04. Attention：大模型的“阅读重点”机制｜从零开始理解大模型</title>
+  <meta name="description" content="Attention 让每个 token 在生成表示时，按权重查看前面的 token，从而把上下文关系带进当前表示。">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1f2430">
+  <link rel="canonical" href="https://githubxsy.github.io/nanoAgent/llm-04-attention.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="从零开始理解agent">
+  <meta property="og:title" content="LLM 04. Attention：大模型的“阅读重点”机制｜从零开始理解大模型">
+  <meta property="og:description" content="Attention 让每个 token 在生成表示时，按权重查看前面的 token，从而把上下文关系带进当前表示。">
+  <meta property="og:url" content="https://githubxsy.github.io/nanoAgent/llm-04-attention.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="LLM 04. Attention：大模型的“阅读重点”机制｜从零开始理解大模型">
+  <meta name="twitter:description" content="Attention 让每个 token 在生成表示时，按权重查看前面的 token，从而把上下文关系带进当前表示。">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/site.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"LLM 04. Attention：大模型的“阅读重点”机制","description":"Attention 让每个 token 在生成表示时，按权重查看前面的 token，从而把上下文关系带进当前表示。","dateModified":"2026-06-07","inLanguage":"zh-CN","author":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"publisher":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"url":"https://githubxsy.github.io/nanoAgent/llm-04-attention.html","keywords":["Attention","QKV","Causal Mask"],"isPartOf":{"@type":"CreativeWorkSeries","name":"从零开始理解大模型","url":"https://githubxsy.github.io/nanoAgent/llm.html"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://githubxsy.github.io/nanoAgent/"},{"@type":"ListItem","position":2,"name":"LLM 讲义","item":"https://githubxsy.github.io/nanoAgent/llm.html"},{"@type":"ListItem","position":3,"name":"第 04 讲","item":"https://githubxsy.github.io/nanoAgent/llm-04-attention.html"}]}</script>
+</head>
+<body class="article-body">
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span class="reading-progress-bar"></span></div>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="llm.html">
+        <span class="brand-mark">LLM</span>
+        <span class="brand-text">从零开始理解大模型</span>
+      </a>
+      <nav class="top-nav">
+        <a href="llm.html">LLM 目录</a>
+        <a href="index.html">Agent 讲义</a>
+        <a href="summary.html">总结与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="article-layout" id="main-content">
+      <aside class="article-sidebar">
+        <div class="sidebar-card">
+          <p class="eyebrow">LLM 04 · 第四步：知道该看哪里</p>
+          <h2 class="lesson-title">Attention</h2>
+          <p>Attention 让每个 token 在生成表示时，按权重查看前面的 token，从而把上下文关系带进当前表示。</p>
+          <div class="chip-row">
+            <span class="chip">7 分钟</span>
+            <span class="chip">Query + Key + Value</span>
+            <span class="chip">双图讲解</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>LLM 导航</h2>
+          <div class="chapter-rail">
+            <a class="chapter-rail-link" href="llm-01-next-token.html">
+              <span class="course-step">LLM 01</span>
+              <strong>下一个词预测</strong>
+              <small>Next Token Prediction</small>
+            </a>
+
+            <a class="chapter-rail-link" href="llm-02-token.html">
+              <span class="course-step">LLM 02</span>
+              <strong>Token</strong>
+              <small>Tokenization + BPE</small>
+            </a>
+
+            <a class="chapter-rail-link" href="llm-03-embedding.html">
+              <span class="course-step">LLM 03</span>
+              <strong>Embedding</strong>
+              <small>Embedding Vector</small>
+            </a>
+
+            <a class="chapter-rail-link is-current" href="llm-04-attention.html">
+              <span class="course-step">LLM 04</span>
+              <strong>Attention</strong>
+              <small>Query + Key + Value</small>
+            </a>
+
+            <a class="chapter-rail-link" href="llm-05-transformer.html">
+              <span class="course-step">LLM 05</span>
+              <strong>Transformer</strong>
+              <small>Attention + FFN + Residual</small>
+            </a>
+
+            <a class="chapter-rail-link" href="llm-06-training.html">
+              <span class="course-step">LLM 06</span>
+              <strong>训练</strong>
+              <small>Loss + Gradient Descent</small>
+            </a>
+
+            <a class="chapter-rail-link" href="llm-07-inference.html">
+              <span class="course-step">LLM 07</span>
+              <strong>推理</strong>
+              <small>Prefill + Decode + KV Cache</small>
+            </a>
+
+            <a class="chapter-rail-link" href="llm-08-context-window.html">
+              <span class="course-step">LLM 08</span>
+              <strong>上下文窗口</strong>
+              <small>Context Window</small>
+            </a>
+
+            <a class="chapter-rail-link" href="llm-09-scaling-law.html">
+              <span class="course-step">LLM 09</span>
+              <strong>Scaling Law</strong>
+              <small>Scale + Loss</small>
+            </a>
+
+            <a class="chapter-rail-link" href="llm-10-agent.html">
+              <span class="course-step">LLM 10</span>
+              <strong>LLM 到 Agent</strong>
+              <small>LLM + Tools + Loop</small>
+            </a>
+            </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>页面目录</h2>
+          <nav class="toc">
+            <a class="toc-link" href="#thesis">文章主旨</a><a class="toc-link" href="#visual">两张图看懂</a><a class="toc-link" href="#analogy">原文比喻</a><a class="toc-link" href="#explain">概念拆解</a><a class="toc-link" href="#observe">可选小实验</a><a class="toc-link" href="#extend">继续阅读</a>
+          </nav>
+        </div>
+      </aside>
+
+      <article class="article-main">
+        <section class="article-hero">
+          <div class="breadcrumbs">
+            <a href="index.html">首页</a>
+            <span>/</span>
+            <a href="llm.html">LLM 讲义</a>
+            <span>/</span>
+            <span>第 04 页</span>
+          </div>
+          <p class="eyebrow">从零开始理解大模型</p>
+          <h1>04. Attention：大模型的“阅读重点”机制</h1>
+          <p class="lead">Attention 让每个 token 在生成表示时，按权重查看前面的 token，从而把上下文关系带进当前表示。</p>
+          <div class="tag-row"><span class="tag">Attention</span><span class="tag">QKV</span><span class="tag">Causal Mask</span></div>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#thesis">读文章主旨</a>
+            <a class="secondary-btn" href="#visual">先看两张图</a>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="thesis">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Thesis</p>
+            <h2>文章主旨</h2>
+          </div>
+          <p>Attention 让每个 token 在生成表示时，按权重查看前面的 token，从而把上下文关系带进当前表示。</p>
+          <p class="scenario-text">一句话里每个词的重要性不同。模型生成最后一个词时，不能平均看前面所有词，而要知道当前最该关注谁。</p>
+        </section>
+
+        <section class="lesson-section" id="visual">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Visual</p>
+            <h2>两张图看懂</h2>
+            <p>第一张图讲机制怎么流动，第二张图把抽象概念落到生活直觉。</p>
+          </div>
+          <div class="llm-figure-grid">
+
+    <figure class="lesson-figure llm-flow-figure">
+      <img src="assets/llm-04-attention.svg" alt="Attention 给上下文分配权重">
+      <figcaption>当前 token 通过 Q 去匹配前文的 K，再按权重取走 V 中的信息。</figcaption>
+    </figure>
+
+
+    <figure class="lesson-figure llm-analogy-figure">
+      <img src="assets/llm-04-attention-analogy.svg" alt="图书馆里按标签找书">
+      <figcaption>先扫书架标签并打分，再把精力放到最相关的书上；Attention 也是先打分再取信息。</figcaption>
+    </figure>
+
+          </div>
+        </section>
+
+        <section class="lesson-section" id="analogy">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Analogy</p>
+            <h2>原文比喻</h2>
+          </div>
+          <div class="llm-analogy-note">
+            <p><strong>图书馆里按标签找书</strong></p>
+            <p>文章把 Attention 比成在图书馆找书：先扫每本书的标签并打分，再把主要精力放到最相关的内容上。</p>
+            <p>对应到机制：当前 token 通过 Q 去匹配前文的 K，再按权重取走 V 中的信息。</p>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="explain">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Explain</p>
+            <h2>概念拆解</h2>
+            <p>按下面三步讲，会比直接抛术语更顺：先建立直觉，再解释机制，最后落到本页结论。</p>
+          </div>
+          <div class="llm-explain-grid">
+
+            <article class="explain-card">
+              <p class="lesson-index">Step 01</p>
+              <h3>先问问题</h3>
+              <p>当前 token 会形成 Query，可以理解为“我现在需要找什么线索”。</p>
+            </article>
+
+            <article class="explain-card">
+              <p class="lesson-index">Step 02</p>
+              <h3>再匹配线索</h3>
+              <p>前文 token 提供 Key 和 Value；Key 用来匹配，Value 是真正被取走的信息。</p>
+            </article>
+
+            <article class="explain-card">
+              <p class="lesson-index">Step 03</p>
+              <h3>最后加权汇总</h3>
+              <p>Attention 权重不是平均分配，而是让相关位置贡献更多上下文信息。</p>
+            </article>
+
+          </div>
+          <h3 class="summary-subtitle">本页要带走的三句话</h3>
+          <ul class="lesson-list"><li>Attention 负责在上下文里分配注意力权重。</li><li>因果语言模型只能看当前位置及之前的 token。</li><li>多头注意力让模型能同时从多个角度理解一句话。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="observe">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Small Check</p>
+            <h2>可选小实验</h2>
+            <p>把抽象的 Attention 变成可观察的矩阵和热力图。 实验只用于观察现象，不作为本页主线。</p>
+          </div>
+          <div class="demo-box">
+            <p class="lesson-index">可选实验命令</p>
+            <pre class="demo-command"><code>python3 llm/04-attention/attention.py &quot;The capital of France is&quot; --layer 0</code></pre>
+          </div>
+          <ul class="lesson-list"><li>Attention 矩阵会显示每个 token 对前面 token 的关注权重。</li><li>右上角未来位置不可见，这是因果掩码的效果。</li><li>最后一个 token 的注意力变化，可以直观看到模型如何汇总前文。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="extend">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Extend</p>
+            <h2>继续阅读</h2>
+            <p>教学页以讲清文章为主；完整原文与配套脚本保留在仓库中，方便分享后继续查阅。</p>
+          </div>
+          <div class="deep-links">
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/04-attention/llm-04-attention.md">读完整原文</a>
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/04-attention/attention.py">查看配套脚本</a>
+            <a class="secondary-btn" href="llm.html">回到 LLM 目录</a>
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a class="pager-link" href="llm-03-embedding.html"><span>上一页</span><strong>03. Embedding</strong></a>
+          <a class="pager-link" href="llm-05-transformer.html"><span>下一页</span><strong>05. Transformer</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>本讲义保留现场分享需要的主线、演示与延伸线索；收束页、番外与完整原文请见下方入口。</p>
+      <div class="footer-links">
+        <a href="llm.html">LLM 讲义</a>
+        <a href="summary.html">收束与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub 仓库</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/README_CN.md">系列导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/README.md">大模型导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/build_site.py">站点生成器</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

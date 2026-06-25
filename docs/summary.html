@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>收束与延伸｜60 分钟讲义</title>
+  <meta name="description" content="用一页回顾七讲主线，并给出 Agent 番外篇与大模型系列目录。">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1f2430">
+  <link rel="canonical" href="https://githubxsy.github.io/nanoAgent/summary.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="从零开始理解agent">
+  <meta property="og:title" content="收束与延伸｜60 分钟讲义">
+  <meta property="og:description" content="用一页回顾七讲主线，并给出 Agent 番外篇与大模型系列目录。">
+  <meta property="og:url" content="https://githubxsy.github.io/nanoAgent/summary.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="收束与延伸｜60 分钟讲义">
+  <meta name="twitter:description" content="用一页回顾七讲主线，并给出 Agent 番外篇与大模型系列目录。">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/site.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"收束与延伸：七讲之后怎么继续","description":"用一页回顾七讲主线，并给出 Agent 番外篇与大模型系列目录。","dateModified":"2026-06-07","inLanguage":"zh-CN","author":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"publisher":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"url":"https://githubxsy.github.io/nanoAgent/summary.html"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://githubxsy.github.io/nanoAgent/"},{"@type":"ListItem","position":2,"name":"七讲讲义","item":"https://githubxsy.github.io/nanoAgent/#lessons"},{"@type":"ListItem","position":3,"name":"收束与延伸","item":"https://githubxsy.github.io/nanoAgent/summary.html"}]}</script>
+</head>
+<body class="article-body">
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span class="reading-progress-bar"></span></div>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">nanoAgent</span>
+        <span class="brand-text">从零开始理解agent</span>
+      </a>
+      <nav class="top-nav">
+        <a href="index.html#agenda">时间分配</a>
+        <a href="index.html#lessons">七讲讲义</a>
+        <a href="#extras">Agent 番外</a>
+        <a href="llm.html">LLM 讲义</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="article-layout" id="main-content">
+      <aside class="article-sidebar">
+        <div class="sidebar-card">
+          <p class="eyebrow">Closure</p>
+          <h2 class="lesson-title">从最小闭环到完整结构</h2>
+          <p>这一页不再展开新概念，而是把七讲串成一张地图，并给出分享结束后的延伸阅读入口。</p>
+          <div class="chip-row">
+            <span class="chip">主线收束</span>
+            <span class="chip">Agent 番外</span>
+            <span class="chip">大模型目录</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>分享导航</h2>
+          <div class="chapter-rail">
+            <a class="chapter-rail-link" href="essence.html">
+              <span class="course-step">第 01 讲</span>
+              <strong>底层原理，约 100 行</strong>
+              <small>最小闭环 · LLM + 工具 + 循环</small>
+            </a>
+
+            <a class="chapter-rail-link" href="memory.html">
+              <span class="course-step">第 02 讲</span>
+              <strong>Memory：让 Agent 记住上一次</strong>
+              <small>记忆回放 · 写入记忆 + 回放记忆</small>
+            </a>
+
+            <a class="chapter-rail-link" href="skills-mcp.html">
+              <span class="course-step">第 03 讲</span>
+              <strong>Skills、Rules 与 MCP</strong>
+              <small>能力外置 · Skill + Rule + MCP</small>
+            </a>
+
+            <a class="chapter-rail-link" href="subagent.html">
+              <span class="course-step">第 04 讲</span>
+              <strong>SubAgent 子智能体</strong>
+              <small>任务委派 · 独立上下文 + 角色委派</small>
+            </a>
+
+            <a class="chapter-rail-link" href="teams.html">
+              <span class="course-step">第 05 讲</span>
+              <strong>多智能体团队协作</strong>
+              <small>团队编排 · 持久 Agent + 通信通道</small>
+            </a>
+
+            <a class="chapter-rail-link" href="compact.html">
+              <span class="course-step">第 06 讲</span>
+              <strong>上下文压缩</strong>
+              <small>长任务生存 · 摘要旧消息，保留最近窗口</small>
+            </a>
+
+            <a class="chapter-rail-link" href="safety.html">
+              <span class="course-step">第 07 讲</span>
+              <strong>三道安全防线</strong>
+              <small>安全边界 · 黑名单 + 人工确认 + 输出截断</small>
+            </a>
+
+        <a class="chapter-rail-link is-current" href="summary.html">
+          <span class="course-step">收束</span>
+          <strong>收束与延伸</strong>
+          <small>主线收束 · Agent 番外 · 大模型目录</small>
+        </a>
+        </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>页面目录</h2>
+          <nav class="toc">
+            <a class="toc-link" href="#closure">一小时之后留下什么</a><a class="toc-link" href="#map">七讲怎么串起来</a><a class="toc-link" href="#full">完整版 Agent</a><a class="toc-link" href="#extras">Agent 番外篇</a><a class="toc-link" href="#llm">大模型序列目录</a><a class="toc-link" href="#next">下一步怎么继续</a>
+          </nav>
+        </div>
+      </aside>
+
+      <article class="article-main">
+        <section class="article-hero">
+          <div class="breadcrumbs">
+            <a href="index.html">首页</a>
+            <span>/</span>
+            <a href="index.html#lessons">讲义列表</a>
+            <span>/</span>
+            <span>收束与延伸</span>
+          </div>
+          <p class="eyebrow">60 分钟讲义</p>
+          <h1>收束与延伸：七讲之后怎么继续</h1>
+          <p class="lead">七讲主线到这里收束：从最小闭环出发，补上能力外置、记忆、委派、协作、压缩与安全。后面可以继续做 Agent 工程，也可以回到底层模型原理。</p>
+          <div class="tag-row">
+            <span class="tag">收束与延伸</span>
+            <span class="tag">Agent 番外</span>
+            <span class="tag">大模型目录</span>
+          </div>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#map">先看七讲地图</a>
+            <a class="secondary-btn" href="#extras">再看延伸目录</a>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="closure">
+          <div class="lesson-section-head">
+            <p class="eyebrow">CLOSURE</p>
+            <h2>一小时之后留下什么</h2>
+            <p>把七讲收束成四个问题：怎么动手、怎么记住、怎么分工、怎么控风险。</p>
+          </div>
+          <div class="format-grid">
+
+            <article class="format-card format-card-feature">
+              <span class="format-step">01</span>
+              <h3>看懂结构</h3>
+              <p>Agent = 模型 + 工具 + 循环 + 上下文 + 边界。看代码时，先找它怎么把目标拆成可执行动作。</p>
+            </article>
+
+            <article class="format-card format-card-feature">
+              <span class="format-step">02</span>
+              <h3>判断能力</h3>
+              <p>Rule 管约束，Skill 管方法，MCP 接工具；Memory 和压缩管上下文，SubAgent 和 Teams 管分工。</p>
+            </article>
+
+            <article class="format-card format-card-feature">
+              <span class="format-step">03</span>
+              <h3>继续实践</h3>
+              <p>想做项目，先跑完整代码；想补原理，再回到大模型系列。</p>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="lesson-section" id="map">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Map</p>
+            <h2>七讲怎么串起来</h2>
+            <p>顺序不是随便排的，而是从“让模型能动手”一路走到“让它安全可控地做事”。</p>
+          </div>
+          <div class="lesson-grid">
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 01 讲 · 最小闭环</p>
+              <h3>底层原理，约 100 行</h3>
+              <p>将其视作一台能自主选择工具的任务执行器，而非聊天窗口。</p>
+              <div class="lesson-meta">
+                <span>8 分钟</span>
+                <span>LLM + 工具 + 循环</span>
+              </div>
+              <a class="lesson-link" href="essence.html">回看这一讲</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 02 讲 · 记忆回放</p>
+              <h3>Memory：让 Agent 记住上一次</h3>
+              <p>连续运行两次任务，再打开 <code class="inline">agent_memory.md</code> 观察历史如何被写入并带回下一轮。</p>
+              <div class="lesson-meta">
+                <span>8 分钟</span>
+                <span>写入记忆 + 回放记忆</span>
+              </div>
+              <a class="lesson-link" href="memory.html">回看这一讲</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 03 讲 · 能力外置</p>
+              <h3>Skills、Rules 与 MCP</h3>
+              <p>使用一个最小 Rule 与一个最小 Skill 进行演示，再观察 MCP 工具如何接入。</p>
+              <div class="lesson-meta">
+                <span>10 分钟</span>
+                <span>Skill + Rule + MCP</span>
+              </div>
+              <a class="lesson-link" href="skills-mcp.html">回看这一讲</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 04 讲 · 任务委派</p>
+              <h3>SubAgent 子智能体</h3>
+              <p>使用 API 设计与前端交互两个轻量角色演示，避免文件生成噪音，让委派过程更清楚。</p>
+              <div class="lesson-meta">
+                <span>8 分钟</span>
+                <span>独立上下文 + 角色委派</span>
+              </div>
+              <a class="lesson-link" href="subagent.html">回看这一讲</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 05 讲 · 团队编排</p>
+              <h3>多智能体团队协作</h3>
+              <p>用发布前评审流水线演示：开发交付、安全审查、发布 reviewer 复盘，团队价值会更明显。</p>
+              <div class="lesson-meta">
+                <span>9 分钟</span>
+                <span>持久 Agent + 通信通道</span>
+              </div>
+              <a class="lesson-link" href="teams.html">回看这一讲</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 06 讲 · 长任务生存</p>
+              <h3>上下文压缩</h3>
+              <p>默认低阈值配合分步工具调用，是最直观的压缩演示方式。</p>
+              <div class="lesson-meta">
+                <span>7 分钟</span>
+                <span>摘要旧消息，保留最近窗口</span>
+              </div>
+              <a class="lesson-link" href="compact.html">回看这一讲</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 07 讲 · 安全边界</p>
+              <h3>三道安全防线</h3>
+              <p>将安全视为让 Agent 能被放心使用的基本前提。</p>
+              <div class="lesson-meta">
+                <span>5 分钟</span>
+                <span>黑名单 + 人工确认 + 输出截断</span>
+              </div>
+              <a class="lesson-link" href="safety.html">回看这一讲</a>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="lesson-section" id="full">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Full Build</p>
+            <h2>完整版 Agent</h2>
+            <p>想把七讲里的组件重新拼回一个可直接运行的原型，可以从这里进入。</p>
+          </div>
+          <div class="lesson-grid">
+            <article class="lesson-card">
+              <p class="lesson-index">Full · 732 行代码</p>
+              <h3>七篇合一：完整 Agent</h3>
+              <p>把工具循环、记忆、Rules、Skills、MCP、SubAgent、Teams、上下文压缩和安全防线重新放回一个文件，适合对照七讲之后整体回看。</p>
+              <div class="deep-links">
+                <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/full/agent-full.md">看完整说明</a>
+                <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/full/agent-full.py">看完整代码</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="extras">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Agent Bonus</p>
+            <h2>Agent 番外篇</h2>
+            <p>这些番外回答七讲里没有展开的问题：为什么需要文件系统、Token 花在哪、Streaming 怎么做、怎么评估是否完成任务、真实 MCP 长什么样。</p>
+          </div>
+          <div class="lesson-grid">
+
+            <article class="lesson-card">
+              <p class="lesson-index">Agent 番外 · 08</p>
+              <h3>为什么 Agent 需要一个文件系统？</h3>
+              <p>「从零开始理解 Agent」系列番外 —— 回顾第一篇，我们给 Agent 的三个工具是 readfile、writefile、executebash。当时没有解释为什么是这三个，而…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/08-filesystem/nanoAgent-bonus-filesystem.md">读番外原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">Agent 番外 · 09</p>
+              <h3>Token 都花在哪了？</h3>
+              <p>「从零开始理解 Agent」系列番外 —— 七篇正文里，我们从来没关心过一个问题：跑一次 Agent 到底消耗多少 Token？每轮循环花了多少？工具返回结果占了多大比例？这篇番外给…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/09-token/nanoAgent-bonus-token.md">读番外原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">Agent 番外 · 10</p>
+              <h3>LLM 是怎么从一堆工具里挑出正确的那个的？</h3>
+              <p>这是「从零开始理解 Agent」系列的一篇番外。有读者问了一个好问题：Agent 有那么多工具（bash、read、write、grep、subagent……），LLM 是怎么知道该…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/10-tool-selection/nanoAgent-bonus-tool-selection.md">读番外原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">Agent 番外 · 11</p>
+              <h3>Agent 思考时，用户在干等</h3>
+              <p>「从零开始理解 Agent」系列番外 —— 七篇正文 + 前几篇番外，我们一直在讲 Agent 内部怎么运转。但有一个体验问题从第一篇就存在：Agent 调用 API 后，终端一片空…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/11-streaming/nanoAgent-bonus-streaming.md">读番外原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">Agent 番外 · 12</p>
+              <h3>Command——不是所有操作都要过大脑</h3>
+              <p>系列文章从第一篇起，我们建立了一个核心心智模型：用户输入 → LLM 思考 → 调用工具 → 观察结果 → 继续思考 → ... → 返回答案。这个循环是 Agent 的大脑。但现实…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/12-command/nanoAgent-bonus-command.md">读番外原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">Agent 番外 · 13</p>
+              <h3>Agent 出了问题怎么排查？</h3>
+              <p>「从零开始理解 Agent」系列番外 —— 前面的番外讲了怎么看 Token 花在哪（Token 篇）、怎么判断任务做没做完（Eval 篇）、怎么让用户不干等（流式篇）。但有一个问题…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/13-observable/nanoAgent-bonus-observable.md">读番外原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">Agent 番外 · 14</p>
+              <h3>Agent 怎么知道自己做完了？</h3>
+              <p>「从零开始理解 Agent」系列番外 —— 有读者问了一个好问题：第一篇里，Agent 循环的退出条件是&quot;没有 toolcalls 就停&quot;。但 LLM 不调工具，不代表任务完成了——…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/14-eval/nanoAgent-bonus-eval.md">读番外原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">Agent 番外 · 15</p>
+              <h3>谁来创建 Agent？主 Agent 创建 vs 用户创建的两种模式</h3>
+              <p>在系列第五篇中，我们实现了多智能体团队——由编排代码在运行时动态创建 Agent。但在实际产品中，还有另一种常见模式：由用户在运行前手动创建多个 Agent，然后由主 Agent 调…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/15-agent-creation-modes/nanoagent-bonus-agent-creation-modes.md">读番外原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">Agent 番外 · 16</p>
+              <h3>真正的 MCP 长什么样？107 行代码实现完整 MCP Server + Agent 接入</h3>
+              <p>在系列第三篇中，我们讲了 MCP 的概念——&quot;AI 世界的 USB 接口&quot;，但那个实现是简化版的（只读了配置文件中的工具 schema，没有真正的 server 通信）。很多读者留言…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/16-mcp-real/nanoagent-bonus-mcp-real.md">读番外原文</a>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="lesson-section" id="llm">
+          <div class="lesson-section-head">
+            <p class="eyebrow">LLM Series</p>
+            <h2>大模型序列文章目录</h2>
+            <p>想把 Agent 再接回底层原理，可以顺着这套目录往回看：先正篇十讲，再番外六讲。</p>
+          </div>
+          <div class="deep-links">
+            <a class="primary-btn" href="llm.html">进入 LLM 教学讲义</a>
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/README.md">查看大模型导读</a>
+          </div>
+          <p class="lesson-index">正篇十讲</p>
+          <div class="lesson-grid">
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 01</p>
+              <h3>一切从&quot;猜下一个词&quot;开始</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始（本文） 第二篇：Token——大模型眼中…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/01-next-token/llm-01-next-token.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 02</p>
+              <h3>Token——大模型眼中的&quot;字&quot;长什么样</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始 第二篇：Token——大模型眼中的&quot;字&quot;…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/02-token/llm-02-token.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 03</p>
+              <h3>向量与 Embedding——把文字变成数学</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始 第二篇：Token——大模型眼中的&quot;字&quot;…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/03-embedding/llm-03-embedding.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 04</p>
+              <h3>Attention——大模型的&quot;阅读理解&quot;机制</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始 第二篇：Token——大模型眼中的&quot;字&quot;…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/04-attention/llm-04-attention.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 05</p>
+              <h3>Transformer 全景——积木怎么搭成大厦</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始 第二篇：Token——大模型眼中的&quot;字&quot;…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/05-transformer/llm-05-transformer.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 06</p>
+              <h3>训练——70 亿个参数是怎么&quot;学&quot;出来的</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始 第二篇：Token——大模型眼中的&quot;字&quot;…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/06-training/llm-06-training.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 07</p>
+              <h3>推理——你按下回车后的这一秒发生了什么</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始 第二篇：Token——大模型眼中的&quot;字&quot;…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/07-inference/llm-07-inference.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 08</p>
+              <h3>上下文窗口——大模型的&quot;工作记忆&quot;到底有多大？</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始 第二篇：Token——大模型眼中的&quot;字&quot;…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/08-context-window/llm-08-context-window.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 09</p>
+              <h3>Scaling Law——为什么”大力出奇迹”有效</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始 第二篇：Token——大模型眼中的&quot;字&quot;…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/09-scaling-law/llm-09-scaling-law.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型正篇 · 10</p>
+              <h3>从大模型到 Agent——下一个词预测如何长出手脚</h3>
+              <p>「从零开始理解大模型」系列 —— 十篇文章，从&quot;下一个词预测&quot;到完整的大模型心智模型。每篇配可运行代码。  第一篇：一切从&quot;猜下一个词&quot;开始 第二篇：Token——大模型眼中的&quot;字&quot;…</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/10-agent/llm-10-agent.md">读原文</a>
+            </article>
+
+          </div>
+          <p class="lesson-index summary-subtitle">番外六讲</p>
+          <div class="lesson-grid">
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型番外 · 11</p>
+              <h3>多模态——大模型是怎么”看懂”图片的</h3>
+              <p>「从零开始理解大模型」番外篇 —— 正篇十篇讲的是纯文本大模型。这篇讲多模态：当大模型不只处理文字，还能看图、听声音的时候，架构上到底变了什么？</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/11-multimodal/llm-11-multimodal.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型番外 · 12</p>
+              <h3>为什么大模型离不开 GPU</h3>
+              <p>「从零开始理解大模型」番外篇 —— 正篇十篇讲的是大模型的原理。这篇回答一个很多人好奇的问题：为什么训练和推理都要用 GPU？CPU 不行吗？</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/12-gpu/llm-12-gpu.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型番外 · 13</p>
+              <h3>为什么用 Token 计费？为什么输出比输入贵？</h3>
+              <p>「从零开始理解大模型」番外篇 —— 正篇十篇讲原理，番外篇回答那些&quot;懂了原理之后自然会好奇&quot;的问题。</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/13-token-pricing/llm-13-token-pricing.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型番外 · 14</p>
+              <h3>思考模式和非思考模式到底有什么区别？</h3>
+              <p>「从零开始理解大模型」番外篇 —— 正篇十篇讲原理，番外篇回答那些&quot;懂了原理之后自然会好奇&quot;的问题。</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/14-thinking-mode/llm-14-thinking-mode.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型番外 · 15</p>
+              <h3>DeepSeek V4 Pro 总参数 1.6T，激活参数 49B——这到底是什么意思？</h3>
+              <p>「从零开始理解大模型」番外篇 —— 正篇十篇讲原理，番外篇回答那些&quot;懂了原理之后自然会好奇&quot;的问题。</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/15-moe/llm-15-moe.md">读原文</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">大模型番外 · 16</p>
+              <h3>什么是算子？大模型里的“最小施工单位”</h3>
+              <p>「从零开始理解大模型」番外篇 —— 正篇十篇讲原理，番外篇回答那些&quot;懂了原理之后自然会好奇&quot;的问题。</p>
+              <a class="lesson-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/16-operators/llm-16-operators.md">读原文</a>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="lesson-section" id="next">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Next Step</p>
+            <h2>下一步怎么继续</h2>
+            <p>分享结束后，通常从这三条路径继续最顺。</p>
+          </div>
+          <div class="format-grid">
+
+            <article class="format-card">
+              <h3>回看七讲</h3>
+              <p>重新串起最小闭环到安全边界的完整路径，适合分享结束后收束主线。</p>
+              <a class="secondary-btn" href="summary.html#full">完整版 Agent</a>
+            </article>
+
+            <article class="format-card">
+              <h3>补 Agent 番外</h3>
+              <p>继续回答七讲里没展开的问题：文件系统、Streaming、Eval、真实 MCP 等。</p>
+              <a class="secondary-btn" href="summary.html#extras">Agent 番外</a>
+            </article>
+
+            <article class="format-card">
+              <h3>补模型基础</h3>
+              <p>把 Agent 再接回大模型正篇十讲与番外六讲，形成完整技术地图。</p>
+              <a class="secondary-btn" href="llm.html">LLM 教学讲义</a>
+            </article>
+
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a class="pager-link" href="safety.html"><span>上一篇</span><strong>07. 安全边界</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>本讲义保留现场分享需要的主线、演示与延伸线索；收束页、番外与完整原文请见下方入口。</p>
+      <div class="footer-links">
+        <a href="llm.html">LLM 讲义</a>
+        <a href="summary.html">收束与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub 仓库</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/README_CN.md">系列导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/README.md">大模型导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/build_site.py">站点生成器</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

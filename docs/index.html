@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>从零开始理解agent｜60 分钟讲义</title>
+  <meta name="description" content="一套面向技术分享的 Agent 实战路线：用最小代码和真实演示，从 Tool Loop、Memory、能力外置一路走到压缩与安全边界。">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1f2430">
+  <link rel="canonical" href="https://githubxsy.github.io/nanoAgent/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="从零开始理解agent">
+  <meta property="og:title" content="从零开始理解agent｜60 分钟讲义">
+  <meta property="og:description" content="一套面向技术分享的 Agent 实战路线：用最小代码和真实演示，从 Tool Loop、Memory、能力外置一路走到压缩与安全边界。">
+  <meta property="og:url" content="https://githubxsy.github.io/nanoAgent/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="从零开始理解agent｜60 分钟讲义">
+  <meta name="twitter:description" content="一套面向技术分享的 Agent 实战路线：用最小代码和真实演示，从 Tool Loop、Memory、能力外置一路走到压缩与安全边界。">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/site.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"从零开始理解agent","url":"https://githubxsy.github.io/nanoAgent","description":"一套面向技术分享的 Agent 实战路线：用最小代码和真实演示，从 Tool Loop、Memory、能力外置一路走到压缩与安全边界。","inLanguage":"zh-CN","publisher":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"从零开始理解agent｜60 分钟讲义","description":"一套面向技术分享的 Agent 实战路线：用最小代码和真实演示，从 Tool Loop、Memory、能力外置一路走到压缩与安全边界。","provider":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"educationalLevel":"Intermediate","inLanguage":"zh-CN","url":"https://githubxsy.github.io/nanoAgent/"}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">nanoAgent</span>
+        <span class="brand-text">从零开始理解agent</span>
+      </a>
+      <nav class="top-nav">
+        <a href="#agenda">时间分配</a>
+        <a href="#format">分享结构</a>
+        <a href="#lessons">七讲讲义</a>
+        <a href="llm.html">LLM 讲义</a>
+        <a href="summary.html">总结与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="hero-panel home-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Agent 技术分享 · 60 分钟讲义</p>
+          <h1>从零开始理解agent</h1>
+          <p class="hero-lead">不是概念清单，而是一条从“让模型能动手”到“让系统可控运行”的实战路线。每一讲都用最小代码、真实命令和可复现结果，拆开 AI agent 的共同结构。</p>
+          <p class="mode-note">核心路径：Tool Loop → Memory → Rules / Skills / MCP → SubAgent → Teams → Context Compact → Safety</p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="essence.html">从第 01 讲开始</a>
+            <a class="primary-btn" href="llm.html">进入 LLM 讲义</a>
+            <a class="secondary-btn" href="#agenda">查看 60 分钟路线</a>
+          </div>
+          <div class="hero-metrics">
+            <span><strong>7</strong> 个可运行脚本</span>
+            <span><strong>10</strong> 页 LLM 讲义</span>
+            <span><strong>60</strong> 分钟实战分享</span>
+            <span><strong>1</strong> 条工程主线</span>
+          </div>
+        </div>
+        <div class="hero-side hero-map">
+          <div class="hero-map-head">
+            <p class="eyebrow">Learning Route</p>
+            <h2>从能动手到可控运行</h2>
+          </div>
+          <div class="route-stack">
+            <article class="route-step">
+              <span>01</span>
+              <div><strong>Tool Loop</strong><p>让模型选择工具，代码执行动作。</p></div>
+            </article>
+            <article class="route-step">
+              <span>02</span>
+              <div><strong>Memory</strong><p>把上一次结果重新带回上下文。</p></div>
+            </article>
+            <article class="route-step">
+              <span>03</span>
+              <div><strong>Rules / Skills / MCP</strong><p>把规则、方法和工具从代码里拿出来。</p></div>
+            </article>
+            <article class="route-step">
+              <span>04-05</span>
+              <div><strong>SubAgent / Teams</strong><p>从一次性委派走到持久协作。</p></div>
+            </article>
+            <article class="route-step">
+              <span>06-07</span>
+              <div><strong>Compact / Safety</strong><p>控制上下文，也控制真实执行边界。</p></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block llm-entry-block">
+        <div class="section-head">
+          <p class="eyebrow">LLM First</p>
+          <h2>想先补大模型基础？</h2>
+          <p>如果想先理解模型内部发生了什么，可以从 10 页 LLM 讲义进入：下一个 token、Token、Embedding、Attention、Transformer、训练、推理、上下文窗口、Scaling Law，再接回 Agent。</p>
+        </div>
+        <div class="hero-actions">
+          <a class="primary-btn" href="llm.html">进入 LLM 讲义</a>
+          <a class="secondary-btn" href="summary.html#llm">查看大模型目录</a>
+        </div>
+      </section>
+
+      <section class="section-block" id="format">
+        <div class="section-head">
+          <p class="eyebrow">Format</p>
+          <h2>三步把 Agent 讲清楚</h2>
+          <p>FORMAT 章节不再承担说明书角色，而是明确这场分享的节奏：先给场景，再拆代码，最后用终端结果验证。</p>
+        </div>
+        <div class="format-grid">
+
+            <article class="format-card format-card-feature">
+              <span class="format-step">01</span>
+              <h3>场景切入</h3>
+              <p>每一讲先回答“为什么需要这个机制”，再进入代码。</p>
+              <ul class="lesson-list"><li>用文件创建、发布检查、团队评审等小场景承接概念。</li><li>先建立问题，再看 Agent 为什么需要下一层能力。</li></ul>
+            </article>
+
+            <article class="format-card format-card-feature">
+              <span class="format-step">02</span>
+              <h3>代码拆解</h3>
+              <p>只看决定行为的核心片段，避免陷入整文件细节。</p>
+              <ul class="lesson-list"><li>区分哪些内容进入 prompt，哪些进入 tools，哪些留在 Python。</li><li>把循环、记忆、能力外置、委派和安全都拆成可观察代码。</li></ul>
+            </article>
+
+            <article class="format-card format-card-feature">
+              <span class="format-step">03</span>
+              <h3>终端验证</h3>
+              <p>用演示命令证明机制生效，而不是停在解释层。</p>
+              <ul class="lesson-list"><li>看日志、工具调用、文件产物和最终回答如何对应代码。</li><li>每讲都保留一个能独立复现的小改动入口。</li></ul>
+            </article>
+
+        </div>
+      </section>
+
+      <section class="section-block" id="agenda">
+        <div class="section-head">
+          <p class="eyebrow">Agenda</p>
+          <h2>60 分钟时间分配</h2>
+          <p>整体节奏：每一讲先看关键代码，再用终端验证行为，最后给出一个可独立复现的入口。</p>
+        </div>
+        <div class="agenda-list">
+
+            <article class="agenda-item">
+              <p class="agenda-time">00 - 05</p>
+              <div class="agenda-content">
+                <h3>开场：内容范围与目标</h3>
+                <p>明确这一小时仅覆盖能直接用于 Demo 的核心内容。</p>
+              </div>
+            </article>
+
+            <article class="agenda-item">
+              <p class="agenda-time">05 - 13</p>
+              <div class="agenda-content">
+                <h3>第 01 讲：最小闭环</h3>
+                <p>运行最小 Agent，观察工具调用、执行与结果回填的完整流程。</p>
+              </div>
+            </article>
+
+            <article class="agenda-item">
+              <p class="agenda-time">13 - 21</p>
+              <div class="agenda-content">
+                <h3>第 02 讲：Memory</h3>
+                <p>演示 Agent 将执行结果写入记忆文件，并在下次运行时回放到上下文。</p>
+              </div>
+            </article>
+
+            <article class="agenda-item">
+              <p class="agenda-time">21 - 31</p>
+              <div class="agenda-content">
+                <h3>第 03 讲：Skills / Rules / MCP</h3>
+                <p>接入 Skill、Rule、MCP 三层能力，区分它们注入到上下文还是工具列表。</p>
+              </div>
+            </article>
+
+            <article class="agenda-item">
+              <p class="agenda-time">31 - 39</p>
+              <div class="agenda-content">
+                <h3>第 04 讲：SubAgent</h3>
+                <p>通过前后端双角色案例，说明复杂任务需要委派的原因。</p>
+              </div>
+            </article>
+
+            <article class="agenda-item">
+              <p class="agenda-time">39 - 48</p>
+              <div class="agenda-content">
+                <h3>第 05 讲：Teams</h3>
+                <p>将委派扩展为长期协作团队，演示 reviewer 复盘机制。</p>
+              </div>
+            </article>
+
+            <article class="agenda-item">
+              <p class="agenda-time">48 - 55</p>
+              <div class="agenda-content">
+                <h3>第 06 讲：上下文压缩</h3>
+                <p>用低阈值触发一次完整的压缩流程。</p>
+              </div>
+            </article>
+
+            <article class="agenda-item">
+              <p class="agenda-time">55 - 60</p>
+              <div class="agenda-content">
+                <h3>第 07 讲：安全防线 + 收尾</h3>
+                <p>通过危险命令拦截与人工确认，收束工程化边界。</p>
+              </div>
+            </article>
+
+        </div>
+      </section>
+
+      <section class="section-block" id="lessons">
+        <div class="section-head">
+          <p class="eyebrow">Lesson Pack</p>
+          <h2>七讲讲义</h2>
+          <p>每页统一按“关键代码 → 现场演示 → 自己试一轮”的顺序编排。</p>
+        </div>
+        <div class="lesson-grid">
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 01 讲 · 起步演示</p>
+              <h3>底层原理，约 100 行</h3>
+              <p>没有框架，直接运行 Agent 的最小闭环：模型选择工具，代码执行工具，结果回填给模型。</p>
+              <div class="lesson-meta">
+                <span>8 分钟</span>
+                <span>105 行代码</span>
+                <span>LLM + 工具 + 循环</span>
+              </div>
+              <p class="lesson-kicker">要点：将其视作一台能自主选择工具的任务执行器，而非聊天窗口。</p>
+              <div class="lesson-tag-row"><span class="tag">工具调用</span><span class="tag">Agent Loop</span><span class="tag">最小实现</span></div>
+              <a class="lesson-link" href="essence.html">查看讲义</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 02 讲 · 第二步：持久记忆</p>
+              <h3>Memory：让 Agent 记住上一次</h3>
+              <p>本讲只聚焦 Memory：在第一讲工具循环不变的前提下，增加读取记忆、注入上下文、写回记忆三步。</p>
+              <div class="lesson-meta">
+                <span>8 分钟</span>
+                <span>141 行代码</span>
+                <span>写入记忆 + 回放记忆</span>
+              </div>
+              <p class="lesson-kicker">要点：连续运行两次任务，再打开 <code class="inline">agent_memory.md</code> 观察历史如何被写入并带回下一轮。</p>
+              <div class="lesson-tag-row"><span class="tag">Memory</span><span class="tag">Persistence</span><span class="tag">Context Replay</span></div>
+              <a class="lesson-link" href="memory.html">查看讲义</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 03 讲 · 第三步：能力外置</p>
+              <h3>Skills、Rules 与 MCP</h3>
+              <p>本讲聚焦三层能力扩展：一个最小 Rule、一个最小 Skill、一个最小 MCP 工具。重点不在配置多复杂，而在它们分别注入到上下文还是工具列表。</p>
+              <div class="lesson-meta">
+                <span>10 分钟</span>
+                <span>379 行代码</span>
+                <span>Skill + Rule + MCP</span>
+              </div>
+              <p class="lesson-kicker">要点：使用一个最小 Rule 与一个最小 Skill 进行演示，再观察 MCP 工具如何接入。</p>
+              <div class="lesson-tag-row"><span class="tag">Skills</span><span class="tag">Rules</span><span class="tag">MCP</span></div>
+              <a class="lesson-link" href="skills-mcp.html">查看讲义</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 04 讲 · 任务拆分</p>
+              <h3>SubAgent 子智能体</h3>
+              <p>当单个 Agent 需要同时承担架构、后端、前端工作时，应将部分任务委派给更聚焦的子代理。</p>
+              <div class="lesson-meta">
+                <span>8 分钟</span>
+                <span>347 行代码</span>
+                <span>独立上下文 + 角色委派</span>
+              </div>
+              <p class="lesson-kicker">要点：使用 API 设计与前端交互两个轻量角色演示，避免文件生成噪音，让委派过程更清楚。</p>
+              <div class="lesson-tag-row"><span class="tag">SubAgent</span><span class="tag">Delegation</span><span class="tag">Role Prompt</span></div>
+              <a class="lesson-link" href="subagent.html">查看讲义</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 05 讲 · 持久化协作</p>
+              <h3>多智能体团队协作</h3>
+              <p>SubAgent 仍属一次性角色；本讲将其升级为具备身份、通信与复盘能力的持久团队。</p>
+              <div class="lesson-meta">
+                <span>9 分钟</span>
+                <span>398 行代码</span>
+                <span>持久 Agent + 通信通道</span>
+              </div>
+              <p class="lesson-kicker">要点：用发布前评审流水线演示：开发交付、安全审查、发布 reviewer 复盘，团队价值会更明显。</p>
+              <div class="lesson-tag-row"><span class="tag">Team</span><span class="tag">Inbox</span><span class="tag">Lifecycle</span></div>
+              <a class="lesson-link" href="teams.html">查看讲义</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 06 讲 · 上下文管理</p>
+              <h3>上下文压缩</h3>
+              <p>本讲跳过理论铺垫，专注于一个核心问题：长任务中 Agent 为何会被自身历史拖垮，以及压缩如何缓解。</p>
+              <div class="lesson-meta">
+                <span>7 分钟</span>
+                <span>266 行代码</span>
+                <span>摘要旧消息，保留最近窗口</span>
+              </div>
+              <p class="lesson-kicker">要点：默认低阈值配合分步工具调用，是最直观的压缩演示方式。</p>
+              <div class="lesson-tag-row"><span class="tag">Context Window</span><span class="tag">Compaction</span><span class="tag">Summarization</span></div>
+              <a class="lesson-link" href="compact.html">查看讲义</a>
+            </article>
+
+            <article class="lesson-card">
+              <p class="lesson-index">第 07 讲 · 工程边界</p>
+              <h3>三道安全防线</h3>
+              <p>最后一讲聚焦 Agent 工程使用时常见的三道边界：危险命令拦截、人工确认、超长输出截断。</p>
+              <div class="lesson-meta">
+                <span>5 分钟</span>
+                <span>291 行代码</span>
+                <span>黑名单 + 人工确认 + 输出截断</span>
+              </div>
+              <p class="lesson-kicker">要点：将安全视为让 Agent 能被放心使用的基本前提。</p>
+              <div class="lesson-tag-row"><span class="tag">Safety</span><span class="tag">Approval</span><span class="tag">Guardrails</span></div>
+              <a class="lesson-link" href="safety.html">查看讲义</a>
+            </article>
+
+        </div>
+      </section>
+
+      <section class="section-block" id="summary">
+        <div class="section-head">
+          <p class="eyebrow">Wrap Up</p>
+          <h2>总结与延伸</h2>
+          <p>七讲讲完之后，不在这里断掉：继续收束主线、跳到 Agent 番外，再回到底层大模型系列。</p>
+        </div>
+        <div class="format-grid">
+
+            <article class="format-card">
+              <h3>回看七讲</h3>
+              <p>重新串起最小闭环到安全边界的完整路径，适合分享结束后收束主线。</p>
+              <a class="secondary-btn" href="summary.html">查看收束页</a>
+            </article>
+
+            <article class="format-card">
+              <h3>补 Agent 番外</h3>
+              <p>继续回答七讲里没展开的问题：文件系统、Streaming、Eval、真实 MCP 等。</p>
+              <a class="secondary-btn" href="summary.html#extras">查看 Agent 番外</a>
+            </article>
+
+            <article class="format-card">
+              <h3>补模型基础</h3>
+              <p>把 Agent 再接回大模型正篇十讲与番外六讲，形成完整技术地图。</p>
+              <a class="secondary-btn" href="llm.html">进入 LLM 讲义</a>
+            </article>
+
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>本讲义保留现场分享需要的主线、演示与延伸线索；收束页、番外与完整原文请见下方入口。</p>
+      <div class="footer-links">
+        <a href="llm.html">LLM 讲义</a>
+        <a href="summary.html">收束与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub 仓库</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/README_CN.md">系列导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/README.md">大模型导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/build_site.py">站点生成器</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

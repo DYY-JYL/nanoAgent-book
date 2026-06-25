@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03. Skills、Rules 与 MCP｜60 分钟讲义</title>
+  <meta name="description" content="本讲聚焦三层能力扩展：一个最小 Rule、一个最小 Skill、一个最小 MCP 工具。重点不在配置多复杂，而在它们分别注入到上下文还是工具列表。">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1f2430">
+  <link rel="canonical" href="https://githubxsy.github.io/nanoAgent/skills-mcp.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="从零开始理解agent">
+  <meta property="og:title" content="03. Skills、Rules 与 MCP｜60 分钟讲义">
+  <meta property="og:description" content="本讲聚焦三层能力扩展：一个最小 Rule、一个最小 Skill、一个最小 MCP 工具。重点不在配置多复杂，而在它们分别注入到上下文还是工具列表。">
+  <meta property="og:url" content="https://githubxsy.github.io/nanoAgent/skills-mcp.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="03. Skills、Rules 与 MCP｜60 分钟讲义">
+  <meta name="twitter:description" content="本讲聚焦三层能力扩展：一个最小 Rule、一个最小 Skill、一个最小 MCP 工具。重点不在配置多复杂，而在它们分别注入到上下文还是工具列表。">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/site.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"03. Skills、Rules 与 MCP","description":"本讲聚焦三层能力扩展：一个最小 Rule、一个最小 Skill、一个最小 MCP 工具。重点不在配置多复杂，而在它们分别注入到上下文还是工具列表。","dateModified":"2026-06-07","inLanguage":"zh-CN","author":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"publisher":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"url":"https://githubxsy.github.io/nanoAgent/skills-mcp.html","keywords":["Skills","Rules","MCP"],"isPartOf":{"@type":"CreativeWorkSeries","name":"从零开始理解agent","url":"https://githubxsy.github.io/nanoAgent/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://githubxsy.github.io/nanoAgent/"},{"@type":"ListItem","position":2,"name":"七讲讲义","item":"https://githubxsy.github.io/nanoAgent/#lessons"},{"@type":"ListItem","position":3,"name":"第 03 讲","item":"https://githubxsy.github.io/nanoAgent/skills-mcp.html"}]}</script>
+</head>
+<body class="article-body">
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span class="reading-progress-bar"></span></div>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">nanoAgent</span>
+        <span class="brand-text">从零开始理解agent</span>
+      </a>
+      <nav class="top-nav">
+        <a href="index.html#agenda">时间分配</a>
+        <a href="index.html#lessons">七讲讲义</a>
+        <a href="summary.html">总结与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="article-layout" id="main-content">
+      <aside class="article-sidebar">
+        <div class="sidebar-card">
+          <p class="eyebrow">第 03 讲 · 第三步：能力外置</p>
+          <h2 class="lesson-title">Skills、Rules 与 MCP</h2>
+          <p>本讲聚焦三层能力扩展：一个最小 Rule、一个最小 Skill、一个最小 MCP 工具。重点不在配置多复杂，而在它们分别注入到上下文还是工具列表。</p>
+          <div class="chip-row">
+            <span class="chip">10 分钟</span>
+            <span class="chip">379 行代码</span>
+            <span class="chip">Skill + Rule + MCP</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>分享导航</h2>
+          <div class="chapter-rail">
+            <a class="chapter-rail-link" href="essence.html">
+              <span class="course-step">第 01 讲</span>
+              <strong>底层原理，约 100 行</strong>
+              <small>最小闭环 · LLM + 工具 + 循环</small>
+            </a>
+
+            <a class="chapter-rail-link" href="memory.html">
+              <span class="course-step">第 02 讲</span>
+              <strong>Memory：让 Agent 记住上一次</strong>
+              <small>记忆回放 · 写入记忆 + 回放记忆</small>
+            </a>
+
+            <a class="chapter-rail-link is-current" href="skills-mcp.html">
+              <span class="course-step">第 03 讲</span>
+              <strong>Skills、Rules 与 MCP</strong>
+              <small>能力外置 · Skill + Rule + MCP</small>
+            </a>
+
+            <a class="chapter-rail-link" href="subagent.html">
+              <span class="course-step">第 04 讲</span>
+              <strong>SubAgent 子智能体</strong>
+              <small>任务委派 · 独立上下文 + 角色委派</small>
+            </a>
+
+            <a class="chapter-rail-link" href="teams.html">
+              <span class="course-step">第 05 讲</span>
+              <strong>多智能体团队协作</strong>
+              <small>团队编排 · 持久 Agent + 通信通道</small>
+            </a>
+
+            <a class="chapter-rail-link" href="compact.html">
+              <span class="course-step">第 06 讲</span>
+              <strong>上下文压缩</strong>
+              <small>长任务生存 · 摘要旧消息，保留最近窗口</small>
+            </a>
+
+            <a class="chapter-rail-link" href="safety.html">
+              <span class="course-step">第 07 讲</span>
+              <strong>三道安全防线</strong>
+              <small>安全边界 · 黑名单 + 人工确认 + 输出截断</small>
+            </a>
+
+        <a class="chapter-rail-link" href="summary.html">
+          <span class="course-step">收束</span>
+          <strong>收束与延伸</strong>
+          <small>主线收束 · Agent 番外 · 大模型目录</small>
+        </a>
+        </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>页面目录</h2>
+          <nav class="toc">
+            <a class="toc-link" href="#scenario">什么时候会用到</a><a class="toc-link" href="#code">先看关键代码</a><a class="toc-link" href="#demo">再看它怎么跑</a><a class="toc-link" href="#practice">自己试一轮</a><a class="toc-link" href="#goals">这一讲会看懂什么</a><a class="toc-link" href="#talk">三个核心要点</a><a class="toc-link" href="#pitfalls">容易误解</a><a class="toc-link" href="#extend">继续深挖</a>
+          </nav>
+        </div>
+      </aside>
+
+      <article class="article-main">
+        <section class="article-hero">
+          <div class="breadcrumbs">
+            <a href="index.html">首页</a>
+            <span>/</span>
+            <a href="index.html#lessons">讲义列表</a>
+            <span>/</span>
+            <span>第 03 讲</span>
+          </div>
+          <p class="eyebrow">60 分钟讲义</p>
+          <h1>03. Skills、Rules 与 MCP</h1>
+          <p class="lead">本讲聚焦三层能力扩展：一个最小 Rule、一个最小 Skill、一个最小 MCP 工具。重点不在配置多复杂，而在它们分别注入到上下文还是工具列表。</p>
+          <div class="tag-row"><span class="tag">Skills</span><span class="tag">Rules</span><span class="tag">MCP</span></div>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#scenario">从场景开始</a>
+            <a class="secondary-btn" href="#code">直接看代码</a>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="scenario">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Scenario</p>
+            <h2>什么时候会用到</h2>
+          </div>
+          <p class="scenario-text">发布前有三个小问题：删除数据没确认、应用启动报错、按钮颜色不统一。我们不改 Python 代码，只改 Rule、Skill、MCP 配置，就能让 Agent 按固定格式回答、按发布风险排序，并调用外部发布策略。</p>
+        </section>
+
+        <section class="lesson-section" id="code">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Code First</p>
+            <h2>先看关键代码</h2>
+            <p>聚焦决定行为的核心实现，再结合终端结果对照，能更直观地理解 Agent 的工作方式。</p>
+          </div>
+
+          <div class="code-group">
+
+            <article class="code-card">
+              <div class="code-card-head">
+                <div>
+                  <p class="lesson-index">配置入口</p>
+                  <h3>Rules、Skills、MCP 的配置文件位置集中在这里。</h3>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/03-skills-mcp/agent-skills-mcp.py#L17-L20">看 GitHub 行号</a>
+              </div>
+              <pre class="code-block"><code class="language-python">  17 RULES_DIR = &quot;.agent/rules&quot;
+  18 SKILLS_DIR = &quot;.agent/skills&quot;
+  19 MCP_CONFIG = &quot;.agent/mcp.json&quot;
+  20 DEFAULT_MAX_ITERATIONS = 10</code></pre>
+            </article>
+
+            <article class="code-card">
+              <div class="code-card-head">
+                <div>
+                  <p class="lesson-index">Rules / Skills / MCP 的加载</p>
+                  <h3>这段代码展示 <code class="inline">load_rules</code>、Markdown Skill 加载和 MCP 工具加载：Rule 与 Skill 进入 prompt，MCP 进入 tools。</h3>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/03-skills-mcp/agent-skills-mcp.py#L210-L305">看 GitHub 行号</a>
+              </div>
+              <pre class="code-block"><code class="language-python"> 210 def load_rules():
+ 211     rules = []
+ 212     if not os.path.exists(RULES_DIR):
+ 213         return &quot;&quot;
+ 214     try:
+ 215         for rule_file in sorted(Path(RULES_DIR).glob(&quot;*.md&quot;)):
+ 216             with open(rule_file, &quot;r&quot;) as f:
+ 217                 rules.append(f&quot;# {rule_file.stem}\n{f.read()}&quot;)
+ 218         return &quot;\n\n&quot;.join(rules) if rules else &quot;&quot;
+ 219     except:
+ 220         return &quot;&quot;
+ 221
+ 222
+ 223 def count_rule_files():
+ 224     if not os.path.exists(RULES_DIR):
+ 225         return 0
+ 226     return len(list(Path(RULES_DIR).glob(&quot;*.md&quot;)))
+ 227
+ 228
+ 229 def load_skills():
+ 230     skills = []
+ 231     if not os.path.exists(SKILLS_DIR):
+ 232         return []
+ 233     try:
+ 234         skill_files = sorted(Path(SKILLS_DIR).glob(&quot;*/SKILL.md&quot;)) + sorted(
+ 235             Path(SKILLS_DIR).glob(&quot;*.md&quot;)
+ 236         )
+ 237         for skill_file in skill_files:
+ 238             skills.append(parse_markdown_skill(skill_file))
+ 239         return skills
+ 240     except:
+ 241         return []
+ 242
+ 243
+ 244 def parse_markdown_skill(path):
+ 245     content = path.read_text(encoding=&quot;utf-8&quot;)
+ 246     metadata = {}
+ 247     body = content
+ 248     if content.startswith(&quot;---\n&quot;):
+ 249         end = content.find(&quot;\n---&quot;, 4)
+ 250         if end != -1:
+ 251             frontmatter = content[4:end].strip()
+ 252             body = content[end + 4 :].strip()
+ 253             for line in frontmatter.splitlines():
+ 254                 if &quot;:&quot; not in line:
+ 255                     continue
+ 256                 key, value = line.split(&quot;:&quot;, 1)
+ 257                 metadata[key.strip()] = value.strip()
+ 258     name = metadata.get(
+ 259         &quot;name&quot;, path.parent.name if path.name == &quot;SKILL.md&quot; else path.stem
+ 260     )
+ 261     triggers = [
+ 262         trigger.strip().lower()
+ 263         for trigger in metadata.get(&quot;triggers&quot;, &quot;&quot;).split(&quot;,&quot;)
+ 264         if trigger.strip()
+ 265     ]
+ 266     return {
+ 267         &quot;name&quot;: name,
+ 268         &quot;description&quot;: metadata.get(&quot;description&quot;, &quot;&quot;),
+ 269         &quot;when_to_use&quot;: metadata.get(&quot;when_to_use&quot;, &quot;&quot;),
+ 270         &quot;triggers&quot;: triggers,
+ 271         &quot;path&quot;: str(path),
+ 272         &quot;content&quot;: body,
+ 273     }
+ 274
+ 275
+ 276 def format_skill_for_prompt(skill):
+ 277     lines = [
+ 278         f&quot;## {skill[&#x27;name&#x27;]}&quot;,
+ 279         f&quot;Source: {skill[&#x27;path&#x27;]}&quot;,
+ 280         f&quot;Description: {skill.get(&#x27;description&#x27;, &#x27;&#x27;)}&quot;,
+ 281     ]
+ 282     when_to_use = skill.get(&quot;when_to_use&quot;)
+ 283     if when_to_use:
+ 284         lines.append(f&quot;When to use: {when_to_use}&quot;)
+ 285     if skill.get(&quot;triggers&quot;):
+ 286         lines.append(f&quot;Triggers: {&#x27;, &#x27;.join(skill[&#x27;triggers&#x27;])}&quot;)
+ 287     lines.append(skill[&quot;content&quot;])
+ 288     return &quot;\n&quot;.join(lines)
+ 289
+ 290
+ 291 def load_mcp_tools():
+ 292     if not os.path.exists(MCP_CONFIG):
+ 293         return []
+ 294     try:
+ 295         with open(MCP_CONFIG, &quot;r&quot;) as f:
+ 296             config = json.load(f)
+ 297             mcp_tools = []
+ 298             for server_name, server_config in config.get(&quot;mcpServers&quot;, {}).items():
+ 299                 if server_config.get(&quot;disabled&quot;, False):
+ 300                     continue
+ 301                 for tool in server_config.get(&quot;tools&quot;, []):
+ 302                     mcp_tools.append({&quot;type&quot;: &quot;function&quot;, &quot;function&quot;: tool})
+ 303             return mcp_tools
+ 304     except:
+ 305         return []</code></pre>
+            </article>
+
+            <article class="code-card">
+              <div class="code-card-head">
+                <div>
+                  <p class="lesson-index">进入上下文与工具列表的方式</p>
+                  <h3>关键在注入位置：Rules 与 Skills 进入 prompt，MCP 工具进入 <code class="inline">all_tools</code>。</h3>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/03-skills-mcp/agent-skills-mcp.py#L344-L370">看 GitHub 行号</a>
+              </div>
+              <pre class="code-block"><code class="language-python"> 344 def run_agent_with_external_capabilities(task):
+ 345     rule_count = count_rule_files()
+ 346     rules = load_rules()
+ 347     skills = load_skills()
+ 348     mcp_tools = load_mcp_tools()
+ 349     all_tools = base_tools + mcp_tools
+ 350     context_parts = [
+ 351         &quot;You are a helpful assistant that can interact with the system. Be concise.&quot;
+ 352     ]
+ 353     if rules:
+ 354         context_parts.append(f&quot;\n# Rules\n{rules}&quot;)
+ 355         print(f&quot;[Rules] Loaded {rule_count} rule files&quot;)
+ 356     if skills:
+ 357         context_parts.append(
+ 358             f&quot;\n# Skills\n&quot;
+ 359             + &quot;\n\n&quot;.join(format_skill_for_prompt(skill) for skill in skills)
+ 360         )
+ 361         skill_names = [skill[&quot;name&quot;] for skill in skills]
+ 362         print(f&quot;[Skills] Loaded {len(skills)} skill files: {&#x27;, &#x27;.join(skill_names)}&quot;)
+ 363     if mcp_tools:
+ 364         tool_names = [tool[&quot;function&quot;][&quot;name&quot;] for tool in mcp_tools]
+ 365         print(f&quot;[MCP] Loaded {len(mcp_tools)} MCP tools: {&#x27;, &#x27;.join(tool_names)}&quot;)
+ 366     messages = [{&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;\n&quot;.join(context_parts)}]
+ 367     messages.append({&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: task})
+ 368     final_result, messages = run_agent_step(messages, all_tools)
+ 369     print(f&quot;\n{final_result}&quot;)
+ 370     return final_result</code></pre>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="lesson-section" id="demo">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Live Demo</p>
+            <h2>再看它怎么跑</h2>
+            <p>用一条短命令同时证明：Rule 改变输出格式，Skill 改变排序逻辑，MCP 提供可调用的外部策略。</p>
+          </div>
+          <div class="config-showcase">
+            <p class="lesson-index">先看具体配置</p>
+            <div class="config-grid">
+
+            <article class="config-panel">
+              <div class="config-panel-head">
+                <div>
+                  <p class="lesson-index">Rule 配置</p>
+                  <h3>.agent/rules/demo-style.md</h3>
+                  <p>约束最终回答固定输出三行。</p>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/.agent/rules/demo-style.md">看源文件</a>
+              </div>
+              <pre class="code-block"><code># Demo Style
+
+- 最终回答固定输出 3 行，行首分别是：`Rule证据：`、`Skill证据：`、`MCP证据：`。
+- 不输出表格，不展开长解释，每行控制在 60 个字以内。
+- `Skill证据：` 这一行必须使用 `排序：X &gt; Y &gt; Z` 的形式。
+- 如果调用了 MCP 工具，`MCP证据：` 这一行要引用工具返回的“只做演示，不修改文件”。</code></pre>
+            </article>
+
+            <article class="config-panel">
+              <div class="config-panel-head">
+                <div>
+                  <p class="lesson-index">Skill 配置</p>
+                  <h3>.agent/skills/release-triage/SKILL.md</h3>
+                  <p>用 Markdown 描述发布前问题的排序方法。</p>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/.agent/skills/release-triage/SKILL.md">看源文件</a>
+              </div>
+              <pre class="code-block"><code>---
+name: release_triage
+description: 给发布前问题排序：数据安全第一，无法启动第二，界面文案最后。
+when_to_use: 当任务要求整理发布前问题、判断修复顺序或输出发布检查优先级时使用。
+triggers: release_triage, 发布前检查, 发布排序, 修复顺序, 优先级
+---
+
+# Release Triage
+
+## Use When
+
+当任务要求整理发布前问题、判断修复顺序，或输出发布检查优先级时使用。
+
+## Priority Order
+
+1. 数据安全：删除、权限、泄露、不可恢复。
+2. 无法启动：启动报错、构建失败、接口 500。
+3. 界面文案：颜色、按钮、说明文字、README。
+
+## Steps
+
+1. 先判断每个候选项属于数据安全、无法启动、界面文案中的哪一类。
+2. 按数据安全、无法启动、界面文案的顺序排序。
+3. 输出简短排序，例如：`B &gt; A &gt; C`。
+4. 用一句话说明这个顺序来自发布前检查 Skill。
+
+## Output Example
+
+```text
+B &gt; A &gt; C，因为先保数据安全，再保能启动，最后处理界面文案。
+```</code></pre>
+            </article>
+
+            <article class="config-panel">
+              <div class="config-panel-head">
+                <div>
+                  <p class="lesson-index">MCP 配置</p>
+                  <h3>.agent/mcp.json</h3>
+                  <p>把 demo_release_policy 追加到工具列表。</p>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/.agent/mcp.json">看源文件</a>
+              </div>
+              <pre class="code-block"><code>{
+  &quot;mcpServers&quot;: {
+    &quot;demo&quot;: {
+      &quot;disabled&quot;: false,
+      &quot;tools&quot;: [
+        {
+          &quot;name&quot;: &quot;demo_release_policy&quot;,
+          &quot;description&quot;: &quot;Return the fixed release policy for the demo. Use this when asked for MCP evidence, release policy, or external project information.&quot;,
+          &quot;parameters&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {
+              &quot;topic&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;The release demo topic.&quot;
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}</code></pre>
+            </article>
+
+            </div>
+          </div>
+          <div class="demo-box">
+            <p class="lesson-index">演示命令</p>
+            <pre class="demo-command"><code>python3 agent/03-skills-mcp/agent-skills-mcp.py &quot;请先调用 demo_release_policy 获取发布策略。然后按 release_triage 对这三个发布前问题排序：A 应用启动报错；B 删除数据没有二次确认；C 按钮颜色不统一。最后严格按 Rule 要求输出三行。&quot;</code></pre>
+            <ul class="lesson-list"><li>第一屏先看三类日志：<code class="inline">[Rules] Loaded ...</code>、<code class="inline">[Skills] Loaded 1 skill files: release_triage</code>、<code class="inline">[MCP] Loaded ...</code>。</li><li>观察 <code class="inline">[Tool] demo_release_policy(...)</code>，用真实工具调用证明 MCP 已进入 tools。</li><li>最终回答应出现 <code class="inline">Rule证据 / Skill证据 / MCP证据</code> 三行，用输出格式证明 Rule 生效。</li><li>排序应为 <code class="inline">B &gt; A &gt; C</code>：删除数据没确认高于启动报错，按钮颜色排最后，用结果证明 Skill 生效。</li><li>MCP 证据行应提到“只做演示、不修改文件”或发布策略，用工具返回内容证明 MCP 生效。</li></ul>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="practice">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Try It</p>
+            <h2>自己试一轮</h2>
+            <p>使用一个最小 Rule 与一个最小 Skill 进行演示，再观察 MCP 工具如何接入。</p>
+          </div>
+          <ol class="lesson-steps"><li>打开 <code class="inline">.agent/rules/demo-style.md</code>，改一条输出要求，再运行一次任务。</li><li>打开 <code class="inline">.agent/skills/release-triage/SKILL.md</code>，把“无法启动”放到第一位，再运行同一个命令观察排序变化。</li><li>打开 <code class="inline">.agent/mcp.json</code>，将 <code class="inline">demo_release_policy</code> 改名或禁用，观察 <code class="inline">[MCP]</code> 日志和工具列表变化。</li></ol>
+        </section>
+
+        <section class="lesson-section" id="goals">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Takeaway</p>
+            <h2>这一讲会看懂什么</h2>
+          </div>
+          <ul class="lesson-list"><li>知道 Skill 负责补充知识，Rule 负责约束行为，MCP 负责接入外部工具。</li><li>能识别 Rules、Skills、MCP 各自的加载来源，以及它们如何拼装进上下文与工具列表。</li><li>理解工程化 Agent 的关键不在于继续堆内置逻辑，而在于能力与约束的外置。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="talk">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Key Points</p>
+            <h2>三个核心要点</h2>
+          </div>
+          <ul class="lesson-list"><li>最小 Rule 用来约束输出格式，最小 Skill 用来补充排序方法，最小 MCP 用来扩展可调用工具。</li><li>Rules 与 Skills 最终进入 prompt，MCP 最终进入 tools，注入位置不同，作用也不同。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="pitfalls">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Pitfalls</p>
+            <h2>容易误解</h2>
+          </div>
+          <ul class="lesson-list"><li>将所有约束都堆入 Rule，会模糊职责边界，模型也更难稳定执行。</li><li>Skills 过多会稀释上下文，MCP 工具过多会降低模型的工具选择准确率。</li><li>规则、技能、工具描述互相冲突时，模型表现会显著不稳定。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="extend">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Extend</p>
+            <h2>继续深挖</h2>
+            <p>本页未展开完整原文，可通过下方入口查看完整文章与源码。</p>
+          </div>
+          <div class="deep-links">
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/03-skills-mcp/agent-skills-mcp.md">读完整原文</a>
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/03-skills-mcp/agent-skills-mcp.py">看完整代码</a>
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a class="pager-link" href="memory.html"><span>上一篇</span><strong>02. 记忆回放</strong></a>
+          <a class="pager-link" href="subagent.html"><span>下一篇</span><strong>04. 任务委派</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>本讲义保留现场分享需要的主线、演示与延伸线索；收束页、番外与完整原文请见下方入口。</p>
+      <div class="footer-links">
+        <a href="llm.html">LLM 讲义</a>
+        <a href="summary.html">收束与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub 仓库</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/README_CN.md">系列导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/README.md">大模型导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/build_site.py">站点生成器</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

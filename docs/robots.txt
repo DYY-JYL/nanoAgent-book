@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://githubxsy.github.io/nanoAgent/sitemap.xml

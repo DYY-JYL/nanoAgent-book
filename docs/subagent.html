@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04. SubAgent 子智能体｜60 分钟讲义</title>
+  <meta name="description" content="当单个 Agent 需要同时承担架构、后端、前端工作时，应将部分任务委派给更聚焦的子代理。">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1f2430">
+  <link rel="canonical" href="https://githubxsy.github.io/nanoAgent/subagent.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="从零开始理解agent">
+  <meta property="og:title" content="04. SubAgent 子智能体｜60 分钟讲义">
+  <meta property="og:description" content="当单个 Agent 需要同时承担架构、后端、前端工作时，应将部分任务委派给更聚焦的子代理。">
+  <meta property="og:url" content="https://githubxsy.github.io/nanoAgent/subagent.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="04. SubAgent 子智能体｜60 分钟讲义">
+  <meta name="twitter:description" content="当单个 Agent 需要同时承担架构、后端、前端工作时，应将部分任务委派给更聚焦的子代理。">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/site.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"04. SubAgent 子智能体","description":"当单个 Agent 需要同时承担架构、后端、前端工作时，应将部分任务委派给更聚焦的子代理。","dateModified":"2026-06-07","inLanguage":"zh-CN","author":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"publisher":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"url":"https://githubxsy.github.io/nanoAgent/subagent.html","keywords":["SubAgent","Delegation","Role Prompt"],"isPartOf":{"@type":"CreativeWorkSeries","name":"从零开始理解agent","url":"https://githubxsy.github.io/nanoAgent/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://githubxsy.github.io/nanoAgent/"},{"@type":"ListItem","position":2,"name":"七讲讲义","item":"https://githubxsy.github.io/nanoAgent/#lessons"},{"@type":"ListItem","position":3,"name":"第 04 讲","item":"https://githubxsy.github.io/nanoAgent/subagent.html"}]}</script>
+</head>
+<body class="article-body">
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span class="reading-progress-bar"></span></div>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">nanoAgent</span>
+        <span class="brand-text">从零开始理解agent</span>
+      </a>
+      <nav class="top-nav">
+        <a href="index.html#agenda">时间分配</a>
+        <a href="index.html#lessons">七讲讲义</a>
+        <a href="summary.html">总结与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="article-layout" id="main-content">
+      <aside class="article-sidebar">
+        <div class="sidebar-card">
+          <p class="eyebrow">第 04 讲 · 任务拆分</p>
+          <h2 class="lesson-title">SubAgent 子智能体</h2>
+          <p>当单个 Agent 需要同时承担架构、后端、前端工作时，应将部分任务委派给更聚焦的子代理。</p>
+          <div class="chip-row">
+            <span class="chip">8 分钟</span>
+            <span class="chip">347 行代码</span>
+            <span class="chip">独立上下文 + 角色委派</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>分享导航</h2>
+          <div class="chapter-rail">
+            <a class="chapter-rail-link" href="essence.html">
+              <span class="course-step">第 01 讲</span>
+              <strong>底层原理，约 100 行</strong>
+              <small>最小闭环 · LLM + 工具 + 循环</small>
+            </a>
+
+            <a class="chapter-rail-link" href="memory.html">
+              <span class="course-step">第 02 讲</span>
+              <strong>Memory：让 Agent 记住上一次</strong>
+              <small>记忆回放 · 写入记忆 + 回放记忆</small>
+            </a>
+
+            <a class="chapter-rail-link" href="skills-mcp.html">
+              <span class="course-step">第 03 讲</span>
+              <strong>Skills、Rules 与 MCP</strong>
+              <small>能力外置 · Skill + Rule + MCP</small>
+            </a>
+
+            <a class="chapter-rail-link is-current" href="subagent.html">
+              <span class="course-step">第 04 讲</span>
+              <strong>SubAgent 子智能体</strong>
+              <small>任务委派 · 独立上下文 + 角色委派</small>
+            </a>
+
+            <a class="chapter-rail-link" href="teams.html">
+              <span class="course-step">第 05 讲</span>
+              <strong>多智能体团队协作</strong>
+              <small>团队编排 · 持久 Agent + 通信通道</small>
+            </a>
+
+            <a class="chapter-rail-link" href="compact.html">
+              <span class="course-step">第 06 讲</span>
+              <strong>上下文压缩</strong>
+              <small>长任务生存 · 摘要旧消息，保留最近窗口</small>
+            </a>
+
+            <a class="chapter-rail-link" href="safety.html">
+              <span class="course-step">第 07 讲</span>
+              <strong>三道安全防线</strong>
+              <small>安全边界 · 黑名单 + 人工确认 + 输出截断</small>
+            </a>
+
+        <a class="chapter-rail-link" href="summary.html">
+          <span class="course-step">收束</span>
+          <strong>收束与延伸</strong>
+          <small>主线收束 · Agent 番外 · 大模型目录</small>
+        </a>
+        </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>页面目录</h2>
+          <nav class="toc">
+            <a class="toc-link" href="#scenario">什么时候会用到</a><a class="toc-link" href="#code">先看关键代码</a><a class="toc-link" href="#demo">再看它怎么跑</a><a class="toc-link" href="#practice">自己试一轮</a><a class="toc-link" href="#goals">这一讲会看懂什么</a><a class="toc-link" href="#talk">三个核心要点</a><a class="toc-link" href="#pitfalls">容易误解</a><a class="toc-link" href="#extend">继续深挖</a>
+          </nav>
+        </div>
+      </aside>
+
+      <article class="article-main">
+        <section class="article-hero">
+          <div class="breadcrumbs">
+            <a href="index.html">首页</a>
+            <span>/</span>
+            <a href="index.html#lessons">讲义列表</a>
+            <span>/</span>
+            <span>第 04 讲</span>
+          </div>
+          <p class="eyebrow">60 分钟讲义</p>
+          <h1>04. SubAgent 子智能体</h1>
+          <p class="lead">当单个 Agent 需要同时承担架构、后端、前端工作时，应将部分任务委派给更聚焦的子代理。</p>
+          <div class="tag-row"><span class="tag">SubAgent</span><span class="tag">Delegation</span><span class="tag">Role Prompt</span></div>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#scenario">从场景开始</a>
+            <a class="secondary-btn" href="#code">直接看代码</a>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="scenario">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Scenario</p>
+            <h2>什么时候会用到</h2>
+          </div>
+          <p class="scenario-text">一个项目同时要做后端、前端、还要写文档，主 Agent 一边在改 Python 一边在改 HTML，上下文越拉越长，最后什么都做不好。把后端的活交给一个专门写后端的子代理，主 Agent 才能集中做协调。</p>
+        </section>
+
+        <section class="lesson-section" id="code">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Code First</p>
+            <h2>先看关键代码</h2>
+            <p>聚焦决定行为的核心实现，再结合终端结果对照，能更直观地理解 Agent 的工作方式。</p>
+          </div>
+
+          <div class="code-group">
+
+            <article class="code-card">
+              <div class="code-card-head">
+                <div>
+                  <p class="lesson-index">将 subagent 封装为工具</p>
+                  <h3>独立 <code class="inline">sub_messages</code> 与禁止递归，是这段实现最值得关注的两点。</h3>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/04-subagent/agent-subagent.py#L104-L145">看 GitHub 行号</a>
+              </div>
+              <pre class="code-block"><code class="language-python"> 104 # ==================== SubAgent 实现（核心） ====================
+ 105
+ 106
+ 107 def subagent(role, task):
+ 108     &quot;&quot;&quot;启动一个独立的 Agent 循环，拥有专属角色和独立上下文&quot;&quot;&quot;
+ 109     print(f&quot;\n{&#x27;=&#x27; * 50}&quot;)
+ 110     print(f&quot;[SubAgent:{role}] 开始: {task}&quot;)
+ 111     print(f&quot;{&#x27;=&#x27; * 50}&quot;)
+ 112
+ 113     sub_messages = [
+ 114         {
+ 115             &quot;role&quot;: &quot;system&quot;,
+ 116             &quot;content&quot;: f&quot;You are a {role}. Be concise and focused. Only do what is asked.&quot;,
+ 117         },
+ 118         {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: task},
+ 119     ]
+ 120     # SubAgent 不能再派 subagent（防无限递归），只用基础工具
+ 121     sub_tools = [t for t in tools if t[&quot;function&quot;][&quot;name&quot;] != &quot;subagent&quot;]
+ 122
+ 123     for _ in range(10):
+ 124         response = client.chat.completions.create(
+ 125             model=MODEL, messages=sub_messages, tools=sub_tools
+ 126         )
+ 127         message = response.choices[0].message
+ 128         sub_messages.append(message)
+ 129
+ 130         if not message.tool_calls:
+ 131             print(f&quot;[SubAgent:{role}] 完成\n&quot;)
+ 132             return message.content
+ 133
+ 134         for tc in message.tool_calls:
+ 135             fn = tc.function.name
+ 136             args = json.loads(tc.function.arguments)
+ 137             print(
+ 138                 f&quot;  [SubAgent:{role}] {fn}({json.dumps(args, ensure_ascii=False)[:80]})&quot;
+ 139             )
+ 140             result = available_functions[fn](**args)
+ 141             sub_messages.append(
+ 142                 {&quot;role&quot;: &quot;tool&quot;, &quot;tool_call_id&quot;: tc.id, &quot;content&quot;: result}
+ 143             )
+ 144
+ 145     return &quot;SubAgent: max iterations reached&quot;</code></pre>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="lesson-section" id="demo">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Live Demo</p>
+            <h2>再看它怎么跑</h2>
+            <p>委派并不神秘，本质就是把另一个 Agent 也封装成工具。</p>
+          </div>
+          <div class="demo-box">
+            <p class="lesson-index">演示命令</p>
+            <pre class="demo-command"><code>python agent/04-subagent/agent-subagent.py &quot;不要直接完成任务。请调用 subagent 工具两次，两个子代理都不要读写文件：1）role=Python API 设计师，task=为 TODO 应用设计 3 个后端接口，只返回接口清单；2）role=前端交互设计师，task=为 TODO 应用设计 3 个界面交互，只返回交互清单。最后主 Agent 用纯文本 4 行汇总，不要表格：后端交付、前端交付、为什么适合委派、主 Agent 没做什么。&quot;</code></pre>
+            <ul class="lesson-list"><li>终端会连续出现两次 <code class="inline">[Tool] subagent(...)</code>，说明主 Agent 真的把任务委派出去了。</li><li>两段日志会分别显示 <code class="inline">[SubAgent:Python API 设计师]</code> 与 <code class="inline">[SubAgent:前端交互设计师]</code>，角色边界一眼可见。</li><li>最终回答只做 4 行汇总，不展开子代理内部历史，突出“主 Agent 负责协调，SubAgent 负责专门任务”。</li></ul>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="practice">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Try It</p>
+            <h2>自己试一轮</h2>
+            <p>使用 API 设计与前端交互两个轻量角色演示，避免文件生成噪音，让委派过程更清楚。</p>
+          </div>
+          <ol class="lesson-steps"><li>将一个写 README 的任务改由文档子代理完成。</li><li>为子代理补充更具体的角色描述，观察输出稳定性的变化。</li><li>让主代理仅保留协调职责，避免同时承担所有实现细节。</li></ol>
+        </section>
+
+        <section class="lesson-section" id="goals">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Takeaway</p>
+            <h2>这一讲会看懂什么</h2>
+          </div>
+          <ul class="lesson-list"><li>理解 SubAgent 的关键在于独立上下文，而非额外启动一个模型实例。</li><li>能解释为何应禁止子代理继续派生子代理。</li><li>能将一个复杂任务拆解为主代理与子代理两类角色。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="talk">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Key Points</p>
+            <h2>三个核心要点</h2>
+          </div>
+          <ul class="lesson-list"><li>委派的收益来自上下文收敛，并非单纯的并行化。</li><li>角色 prompt 越具体，子代理越容易形成稳定的任务视角。</li><li>返回摘要而非全量历史，是后续控制上下文成本的关键习惯。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="pitfalls">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Pitfalls</p>
+            <h2>容易误解</h2>
+          </div>
+          <ul class="lesson-list"><li>任务边界不清时，主代理与子代理会出现重复劳动。</li><li>允许无限递归委派，成本与复杂度都会失控。</li><li>子代理角色过于宽泛时，它只是换了名字的主代理。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="extend">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Extend</p>
+            <h2>继续深挖</h2>
+            <p>本页未展开完整原文，可通过下方入口查看完整文章与源码。</p>
+          </div>
+          <div class="deep-links">
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/04-subagent/agent-subagent.md">读完整原文</a>
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/04-subagent/agent-subagent.py">看完整代码</a>
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a class="pager-link" href="skills-mcp.html"><span>上一篇</span><strong>03. 能力外置</strong></a>
+          <a class="pager-link" href="teams.html"><span>下一篇</span><strong>05. 团队编排</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>本讲义保留现场分享需要的主线、演示与延伸线索；收束页、番外与完整原文请见下方入口。</p>
+      <div class="footer-links">
+        <a href="llm.html">LLM 讲义</a>
+        <a href="summary.html">收束与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub 仓库</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/README_CN.md">系列导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/README.md">大模型导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/build_site.py">站点生成器</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

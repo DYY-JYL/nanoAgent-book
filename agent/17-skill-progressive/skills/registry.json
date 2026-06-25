@@ -1,0 +1,14 @@
+[
+  {
+    "name": "code-review",
+    "description": "代码审查，支持多维度检查和结构化报告。Use when user asks to review, 代码审查, CR, 检查代码。"
+  },
+  {
+    "name": "doc-search",
+    "description": "本地文档知识库检索，支持分层导航和渐进式检索。Use when user asks to 查文档, 搜索知识库, 找资料, 查制度。"
+  },
+  {
+    "name": "docker-deploy",
+    "description": "Docker 容器化部署，支持 build / up / down / 健康检查。Use when user asks to deploy, docker, 容器部署, 上线。"
+  }
+]

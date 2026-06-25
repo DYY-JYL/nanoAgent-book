@@ -1,0 +1,40 @@
+<svg width="1200" height="540" viewBox="0 0 1200 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="540" rx="32" fill="#FFF9F1"/>
+  <rect x="28" y="28" width="1144" height="484" rx="28" fill="#F7ECDD" stroke="#E2C5A6" stroke-width="2"/>
+  <text x="72" y="92" fill="#B24C2A" font-family="Arial, PingFang SC, sans-serif" font-size="28" font-weight="700">Agent 最小循环</text>
+  <text x="72" y="128" fill="#5A6472" font-family="Arial, PingFang SC, sans-serif" font-size="18">循环是核心，Tool 只是其中一个执行节点。</text>
+
+  <rect x="74" y="212" width="180" height="92" rx="22" fill="#1F2430"/>
+  <text x="112" y="250" fill="#FFF8F0" font-family="Arial, PingFang SC, sans-serif" font-size="24" font-weight="700">用户任务</text>
+  <text x="104" y="282" fill="#E5D6C7" font-family="Arial, PingFang SC, sans-serif" font-size="16">创建文件 / 读文件 / 执行命令</text>
+
+  <rect x="338" y="184" width="238" height="148" rx="24" fill="#FFFDF8" stroke="#B24C2A" stroke-width="3"/>
+  <text x="420" y="228" fill="#1F2430" font-family="Arial, PingFang SC, sans-serif" font-size="28" font-weight="700">LLM</text>
+  <text x="383" y="264" fill="#5A6472" font-family="Arial, PingFang SC, sans-serif" font-size="17">根据当前 messages 判断：</text>
+  <text x="383" y="292" fill="#5A6472" font-family="Arial, PingFang SC, sans-serif" font-size="17">1. 直接回复</text>
+  <text x="383" y="318" fill="#5A6472" font-family="Arial, PingFang SC, sans-serif" font-size="17">2. 还是调用某个 Tool</text>
+
+  <rect x="664" y="184" width="212" height="148" rx="24" fill="#FFFDF8" stroke="#D7A369" stroke-width="3"/>
+  <text x="724" y="228" fill="#1F2430" font-family="Arial, PingFang SC, sans-serif" font-size="28" font-weight="700">Tool</text>
+  <text x="702" y="264" fill="#5A6472" font-family="Arial, PingFang SC, sans-serif" font-size="17">`write_file`</text>
+  <text x="702" y="290" fill="#5A6472" font-family="Arial, PingFang SC, sans-serif" font-size="17">`read_file`</text>
+  <text x="702" y="316" fill="#5A6472" font-family="Arial, PingFang SC, sans-serif" font-size="17">`execute_bash`</text>
+
+  <rect x="954" y="212" width="170" height="92" rx="22" fill="#1F2430"/>
+  <text x="986" y="250" fill="#FFF8F0" font-family="Arial, PingFang SC, sans-serif" font-size="24" font-weight="700">工具结果</text>
+  <text x="982" y="282" fill="#E5D6C7" font-family="Arial, PingFang SC, sans-serif" font-size="16">文件已写入 / 内容已读取</text>
+
+  <path d="M254 258H322" stroke="#B24C2A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M314 248L338 258L314 268" fill="#B24C2A"/>
+
+  <path d="M576 258H648" stroke="#B24C2A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M640 248L664 258L640 268" fill="#B24C2A"/>
+
+  <path d="M876 258H932" stroke="#B24C2A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M924 248L948 258L924 268" fill="#B24C2A"/>
+
+  <path d="M1038 352C1038 420 928 458 770 458C612 458 458 432 458 372" stroke="#B24C2A" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 12"/>
+  <path d="M468 386L458 362L442 382" fill="#B24C2A"/>
+  <text x="694" y="418" fill="#B24C2A" font-family="Arial, PingFang SC, sans-serif" font-size="22" font-weight="700">结果回填到 messages，进入下一轮判断</text>
+
+</svg>

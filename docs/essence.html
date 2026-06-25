@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01. 底层原理，约 100 行｜60 分钟讲义</title>
+  <meta name="description" content="没有框架，直接运行 Agent 的最小闭环：模型选择工具，代码执行工具，结果回填给模型。">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1f2430">
+  <link rel="canonical" href="https://githubxsy.github.io/nanoAgent/essence.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="从零开始理解agent">
+  <meta property="og:title" content="01. 底层原理，约 100 行｜60 分钟讲义">
+  <meta property="og:description" content="没有框架，直接运行 Agent 的最小闭环：模型选择工具，代码执行工具，结果回填给模型。">
+  <meta property="og:url" content="https://githubxsy.github.io/nanoAgent/essence.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="01. 底层原理，约 100 行｜60 分钟讲义">
+  <meta name="twitter:description" content="没有框架，直接运行 Agent 的最小闭环：模型选择工具，代码执行工具，结果回填给模型。">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/site.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"01. 底层原理，约 100 行","description":"没有框架，直接运行 Agent 的最小闭环：模型选择工具，代码执行工具，结果回填给模型。","dateModified":"2026-06-07","inLanguage":"zh-CN","author":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"publisher":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"url":"https://githubxsy.github.io/nanoAgent/essence.html","keywords":["工具调用","Agent Loop","最小实现"],"isPartOf":{"@type":"CreativeWorkSeries","name":"从零开始理解agent","url":"https://githubxsy.github.io/nanoAgent/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://githubxsy.github.io/nanoAgent/"},{"@type":"ListItem","position":2,"name":"七讲讲义","item":"https://githubxsy.github.io/nanoAgent/#lessons"},{"@type":"ListItem","position":3,"name":"第 01 讲","item":"https://githubxsy.github.io/nanoAgent/essence.html"}]}</script>
+</head>
+<body class="article-body">
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span class="reading-progress-bar"></span></div>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">nanoAgent</span>
+        <span class="brand-text">从零开始理解agent</span>
+      </a>
+      <nav class="top-nav">
+        <a href="index.html#agenda">时间分配</a>
+        <a href="index.html#lessons">七讲讲义</a>
+        <a href="summary.html">总结与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="article-layout" id="main-content">
+      <aside class="article-sidebar">
+        <div class="sidebar-card">
+          <p class="eyebrow">第 01 讲 · 起步演示</p>
+          <h2 class="lesson-title">底层原理，约 100 行</h2>
+          <p>没有框架，直接运行 Agent 的最小闭环：模型选择工具，代码执行工具，结果回填给模型。</p>
+          <div class="chip-row">
+            <span class="chip">8 分钟</span>
+            <span class="chip">105 行代码</span>
+            <span class="chip">LLM + 工具 + 循环</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>分享导航</h2>
+          <div class="chapter-rail">
+            <a class="chapter-rail-link is-current" href="essence.html">
+              <span class="course-step">第 01 讲</span>
+              <strong>底层原理，约 100 行</strong>
+              <small>最小闭环 · LLM + 工具 + 循环</small>
+            </a>
+
+            <a class="chapter-rail-link" href="memory.html">
+              <span class="course-step">第 02 讲</span>
+              <strong>Memory：让 Agent 记住上一次</strong>
+              <small>记忆回放 · 写入记忆 + 回放记忆</small>
+            </a>
+
+            <a class="chapter-rail-link" href="skills-mcp.html">
+              <span class="course-step">第 03 讲</span>
+              <strong>Skills、Rules 与 MCP</strong>
+              <small>能力外置 · Skill + Rule + MCP</small>
+            </a>
+
+            <a class="chapter-rail-link" href="subagent.html">
+              <span class="course-step">第 04 讲</span>
+              <strong>SubAgent 子智能体</strong>
+              <small>任务委派 · 独立上下文 + 角色委派</small>
+            </a>
+
+            <a class="chapter-rail-link" href="teams.html">
+              <span class="course-step">第 05 讲</span>
+              <strong>多智能体团队协作</strong>
+              <small>团队编排 · 持久 Agent + 通信通道</small>
+            </a>
+
+            <a class="chapter-rail-link" href="compact.html">
+              <span class="course-step">第 06 讲</span>
+              <strong>上下文压缩</strong>
+              <small>长任务生存 · 摘要旧消息，保留最近窗口</small>
+            </a>
+
+            <a class="chapter-rail-link" href="safety.html">
+              <span class="course-step">第 07 讲</span>
+              <strong>三道安全防线</strong>
+              <small>安全边界 · 黑名单 + 人工确认 + 输出截断</small>
+            </a>
+
+        <a class="chapter-rail-link" href="summary.html">
+          <span class="course-step">收束</span>
+          <strong>收束与延伸</strong>
+          <small>主线收束 · Agent 番外 · 大模型目录</small>
+        </a>
+        </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>页面目录</h2>
+          <nav class="toc">
+            <a class="toc-link" href="#scenario">什么时候会用到</a><a class="toc-link" href="#code">先看关键代码</a><a class="toc-link" href="#demo">再看它怎么跑</a><a class="toc-link" href="#practice">自己试一轮</a><a class="toc-link" href="#goals">这一讲会看懂什么</a><a class="toc-link" href="#talk">三个核心要点</a><a class="toc-link" href="#pitfalls">容易误解</a><a class="toc-link" href="#extend">继续深挖</a>
+          </nav>
+        </div>
+      </aside>
+
+      <article class="article-main">
+        <section class="article-hero">
+          <div class="breadcrumbs">
+            <a href="index.html">首页</a>
+            <span>/</span>
+            <a href="index.html#lessons">讲义列表</a>
+            <span>/</span>
+            <span>第 01 讲</span>
+          </div>
+          <p class="eyebrow">60 分钟讲义</p>
+          <h1>01. 底层原理，约 100 行</h1>
+          <p class="lead">没有框架，直接运行 Agent 的最小闭环：模型选择工具，代码执行工具，结果回填给模型。</p>
+          <div class="tag-row"><span class="tag">工具调用</span><span class="tag">Agent Loop</span><span class="tag">最小实现</span></div>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#scenario">从场景开始</a>
+            <a class="secondary-btn" href="#code">直接看代码</a>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="scenario">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Scenario</p>
+            <h2>什么时候会用到</h2>
+          </div>
+          <p class="scenario-text">把“帮我创建 hello.txt，内容写 Hello Agent”这类任务交给 ChatGPT，它只能给你建议；如果希望它真的在文件系统里创建出这个文件，就需要在模型外面再裹一层能调用工具、能循环执行的代码。</p>
+        </section>
+
+        <section class="lesson-section" id="code">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Code First</p>
+            <h2>先看关键代码</h2>
+            <p>聚焦决定行为的核心实现，再结合终端结果对照，能更直观地理解 Agent 的工作方式。</p>
+          </div>
+
+    <figure class="lesson-figure">
+      <img src="assets/agent-loop-overview.svg" alt="Agent 循环示意图：用户任务进入模型，模型选择工具，工具执行结果回填给模型，再决定下一步。">
+      <figcaption>先记住这一点：Agent 的核心不是某一个 Tool，而是“模型决策、工具执行、结果回填、再次决策”这个循环。</figcaption>
+    </figure>
+
+          <div class="code-group">
+
+            <article class="code-card">
+              <div class="code-card-head">
+                <div>
+                  <p class="lesson-index">最小 Agent 循环</p>
+                  <h3>围绕这二十余行展开：请求模型、获取 tool call、执行工具、回填结果、进入下一轮。</h3>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/01-essence/agent-essence.py#L75-L99">看 GitHub 行号</a>
+              </div>
+              <pre class="code-block"><code class="language-python">  75 def run_agent(user_message, max_iterations=5):
+  76     messages = [
+  77         {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;You are a helpful assistant. Be concise.&quot;},
+  78         {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: user_message},
+  79     ]
+  80     for _ in range(max_iterations):
+  81         response = client.chat.completions.create(
+  82             model=os.environ.get(&quot;OPENAI_MODEL&quot;, &quot;gpt-4o-mini&quot;),
+  83             messages=messages,
+  84             tools=tools,
+  85         )
+  86         message = response.choices[0].message
+  87         messages.append(message)
+  88         if not message.tool_calls:
+  89             return message.content
+  90         for tool_call in message.tool_calls:
+  91             name = tool_call.function.name
+  92             args = json.loads(tool_call.function.arguments)
+  93             print(f&quot;[Tool] {name}({args})&quot;)
+  94             if name not in functions:
+  95                 result = f&quot;Error: Unknown tool &#x27;{name}&#x27;&quot;
+  96             else:
+  97                 result = functions[name](**args)
+  98             messages.append({&quot;role&quot;: &quot;tool&quot;, &quot;tool_call_id&quot;: tool_call.id, &quot;content&quot;: result})
+  99     return &quot;Max iterations reached&quot;</code></pre>
+            </article>
+
+            <article class="code-card">
+              <div class="code-card-head">
+                <div>
+                  <p class="lesson-index">Tool 声明</p>
+                  <h3>这段代码决定了模型能看到哪些能力，以及每个工具需要什么参数。</h3>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/01-essence/agent-essence.py#L13-L53">看 GitHub 行号</a>
+              </div>
+              <pre class="code-block"><code class="language-python">  13 tools = [
+  14     {
+  15         &quot;type&quot;: &quot;function&quot;,
+  16         &quot;function&quot;: {
+  17             &quot;name&quot;: &quot;execute_bash&quot;,
+  18             &quot;description&quot;: &quot;Execute a bash command&quot;,
+  19             &quot;parameters&quot;: {
+  20                 &quot;type&quot;: &quot;object&quot;,
+  21                 &quot;properties&quot;: {&quot;command&quot;: {&quot;type&quot;: &quot;string&quot;}},
+  22                 &quot;required&quot;: [&quot;command&quot;],
+  23             },
+  24         },
+  25     },
+  26     {
+  27         &quot;type&quot;: &quot;function&quot;,
+  28         &quot;function&quot;: {
+  29             &quot;name&quot;: &quot;read_file&quot;,
+  30             &quot;description&quot;: &quot;Read a file&quot;,
+  31             &quot;parameters&quot;: {
+  32                 &quot;type&quot;: &quot;object&quot;,
+  33                 &quot;properties&quot;: {&quot;path&quot;: {&quot;type&quot;: &quot;string&quot;}},
+  34                 &quot;required&quot;: [&quot;path&quot;],
+  35             },
+  36         },
+  37     },
+  38     {
+  39         &quot;type&quot;: &quot;function&quot;,
+  40         &quot;function&quot;: {
+  41             &quot;name&quot;: &quot;write_file&quot;,
+  42             &quot;description&quot;: &quot;Write to a file&quot;,
+  43             &quot;parameters&quot;: {
+  44                 &quot;type&quot;: &quot;object&quot;,
+  45                 &quot;properties&quot;: {
+  46                     &quot;path&quot;: {&quot;type&quot;: &quot;string&quot;},
+  47                     &quot;content&quot;: {&quot;type&quot;: &quot;string&quot;},
+  48                 },
+  49                 &quot;required&quot;: [&quot;path&quot;, &quot;content&quot;],
+  50             },
+  51         },
+  52     },
+  53 ]</code></pre>
+            </article>
+
+            <article class="code-card">
+              <div class="code-card-head">
+                <div>
+                  <p class="lesson-index">工具映射到真实函数</p>
+                  <h3>Tool 并非抽象概念，最终会映射到真实函数；模型选中的名字就在这里被执行。</h3>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/01-essence/agent-essence.py#L56-L72">看 GitHub 行号</a>
+              </div>
+              <pre class="code-block"><code class="language-python">  56 def execute_bash(command):
+  57     result = subprocess.run(command, shell=True, capture_output=True, text=True)
+  58     return result.stdout + result.stderr
+  59
+  60
+  61 def read_file(path):
+  62     with open(path, &quot;r&quot;) as f:
+  63         return f.read()
+  64
+  65
+  66 def write_file(path, content):
+  67     with open(path, &quot;w&quot;) as f:
+  68         f.write(content)
+  69     return f&quot;Wrote to {path}&quot;
+  70
+  71
+  72 functions = {&quot;execute_bash&quot;: execute_bash, &quot;read_file&quot;: read_file, &quot;write_file&quot;: write_file}</code></pre>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="lesson-section" id="demo">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Live Demo</p>
+            <h2>再看它怎么跑</h2>
+            <p>现场观察 Agent 不只是输出文字，而是真实地改动了文件系统。</p>
+          </div>
+          <div class="demo-box">
+            <p class="lesson-index">演示命令</p>
+            <pre class="demo-command"><code>python agent/01-essence/agent-essence.py &quot;创建 hello.txt，内容是 Hello Agent&quot;</code></pre>
+            <ul class="lesson-list"><li>对照循环图：Agent 每一轮执行“决策 → 调用工具 → 回填结果 → 再次决策”。</li><li>终端首先打印 <code class="inline">[Tool] write_file(...)</code>，表示模型选择了工具。</li><li>再次要求读取 <code class="inline">hello.txt</code>，确认改动已落到真实文件。</li><li>查看 <code class="inline">tools</code> 列表：模型只能从这份清单中选择能力。</li></ul>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="practice">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Try It</p>
+            <h2>自己试一轮</h2>
+            <p>将其视作一台能自主选择工具的任务执行器，而非聊天窗口。</p>
+          </div>
+          <ol class="lesson-steps"><li>将 <code class="inline">max_iterations</code> 改为 2，观察复杂任务如何被提前中断。</li><li>临时从 <code class="inline">tools</code> 中移除 <code class="inline">write_file</code>，再要求 Agent 写文件，观察其无法完成的原因。</li><li>让 Agent 连续执行“写文件 + 读文件”两个动作，体会循环结构的必要性。</li><li>为 <code class="inline">execute_bash</code> 补充更清晰的描述，观察模型是否更易选中正确工具。</li></ol>
+        </section>
+
+        <section class="lesson-section" id="goals">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Takeaway</p>
+            <h2>这一讲会看懂什么</h2>
+          </div>
+          <ul class="lesson-list"><li>能解释 Agent 与 Chat 的本质区别。</li><li>能看懂 <code class="inline">tools</code>、<code class="inline">functions</code>、<code class="inline">messages</code> 与循环之间的关系。</li><li>理解 Tool 是模型可见的能力声明，而非模型自行生成的命令。</li><li>明确 Agent 的执行权由代码掌握，不在模型一侧。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="talk">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Key Points</p>
+            <h2>三个核心要点</h2>
+          </div>
+          <ul class="lesson-list"><li>循环：Agent 并非只响应一次，而是在每一轮中决定是否继续行动。</li><li>LLM 输出的是结构化调用意图，并不直接执行系统命令。</li><li>Tool：<code class="inline">tools</code> 是模型看到的能力清单，<code class="inline">functions</code> 才是真正落地执行的代码。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="pitfalls">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Pitfalls</p>
+            <h2>容易误解</h2>
+          </div>
+          <ul class="lesson-list"><li>仅实现 Python 函数而未注册到 <code class="inline">tools</code>，模型无法感知该能力的存在。</li><li><code class="inline">execute_bash</code> 权限过大，后续需要补充安全边界。</li><li>工具报错同样需要回填给模型，否则模型无法自我修正。</li><li>只堆叠工具而不设计循环，最终会退化为普通问答。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="extend">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Extend</p>
+            <h2>继续深挖</h2>
+            <p>本页未展开完整原文，可通过下方入口查看完整文章与源码。</p>
+          </div>
+          <div class="deep-links">
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/01-essence/agent-essence.md">读完整原文</a>
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/01-essence/agent-essence.py">看完整代码</a>
+          </div>
+        </section>
+
+        <nav class="pager">
+
+          <a class="pager-link" href="memory.html"><span>下一篇</span><strong>02. 记忆回放</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>本讲义保留现场分享需要的主线、演示与延伸线索；收束页、番外与完整原文请见下方入口。</p>
+      <div class="footer-links">
+        <a href="llm.html">LLM 讲义</a>
+        <a href="summary.html">收束与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub 仓库</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/README_CN.md">系列导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/README.md">大模型导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/build_site.py">站点生成器</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

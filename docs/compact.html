@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06. 上下文压缩｜60 分钟讲义</title>
+  <meta name="description" content="本讲跳过理论铺垫，专注于一个核心问题：长任务中 Agent 为何会被自身历史拖垮，以及压缩如何缓解。">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1f2430">
+  <link rel="canonical" href="https://githubxsy.github.io/nanoAgent/compact.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="从零开始理解agent">
+  <meta property="og:title" content="06. 上下文压缩｜60 分钟讲义">
+  <meta property="og:description" content="本讲跳过理论铺垫，专注于一个核心问题：长任务中 Agent 为何会被自身历史拖垮，以及压缩如何缓解。">
+  <meta property="og:url" content="https://githubxsy.github.io/nanoAgent/compact.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="06. 上下文压缩｜60 分钟讲义">
+  <meta name="twitter:description" content="本讲跳过理论铺垫，专注于一个核心问题：长任务中 Agent 为何会被自身历史拖垮，以及压缩如何缓解。">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/site.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"06. 上下文压缩","description":"本讲跳过理论铺垫，专注于一个核心问题：长任务中 Agent 为何会被自身历史拖垮，以及压缩如何缓解。","dateModified":"2026-06-07","inLanguage":"zh-CN","author":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"publisher":{"@type":"Organization","name":"GitHubxsy","url":"https://github.com/GitHubxsy/nanoAgent"},"url":"https://githubxsy.github.io/nanoAgent/compact.html","keywords":["Context Window","Compaction","Summarization"],"isPartOf":{"@type":"CreativeWorkSeries","name":"从零开始理解agent","url":"https://githubxsy.github.io/nanoAgent/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://githubxsy.github.io/nanoAgent/"},{"@type":"ListItem","position":2,"name":"七讲讲义","item":"https://githubxsy.github.io/nanoAgent/#lessons"},{"@type":"ListItem","position":3,"name":"第 06 讲","item":"https://githubxsy.github.io/nanoAgent/compact.html"}]}</script>
+</head>
+<body class="article-body">
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span class="reading-progress-bar"></span></div>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">nanoAgent</span>
+        <span class="brand-text">从零开始理解agent</span>
+      </a>
+      <nav class="top-nav">
+        <a href="index.html#agenda">时间分配</a>
+        <a href="index.html#lessons">七讲讲义</a>
+        <a href="summary.html">总结与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="article-layout" id="main-content">
+      <aside class="article-sidebar">
+        <div class="sidebar-card">
+          <p class="eyebrow">第 06 讲 · 上下文管理</p>
+          <h2 class="lesson-title">上下文压缩</h2>
+          <p>本讲跳过理论铺垫，专注于一个核心问题：长任务中 Agent 为何会被自身历史拖垮，以及压缩如何缓解。</p>
+          <div class="chip-row">
+            <span class="chip">7 分钟</span>
+            <span class="chip">266 行代码</span>
+            <span class="chip">摘要旧消息，保留最近窗口</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>分享导航</h2>
+          <div class="chapter-rail">
+            <a class="chapter-rail-link" href="essence.html">
+              <span class="course-step">第 01 讲</span>
+              <strong>底层原理，约 100 行</strong>
+              <small>最小闭环 · LLM + 工具 + 循环</small>
+            </a>
+
+            <a class="chapter-rail-link" href="memory.html">
+              <span class="course-step">第 02 讲</span>
+              <strong>Memory：让 Agent 记住上一次</strong>
+              <small>记忆回放 · 写入记忆 + 回放记忆</small>
+            </a>
+
+            <a class="chapter-rail-link" href="skills-mcp.html">
+              <span class="course-step">第 03 讲</span>
+              <strong>Skills、Rules 与 MCP</strong>
+              <small>能力外置 · Skill + Rule + MCP</small>
+            </a>
+
+            <a class="chapter-rail-link" href="subagent.html">
+              <span class="course-step">第 04 讲</span>
+              <strong>SubAgent 子智能体</strong>
+              <small>任务委派 · 独立上下文 + 角色委派</small>
+            </a>
+
+            <a class="chapter-rail-link" href="teams.html">
+              <span class="course-step">第 05 讲</span>
+              <strong>多智能体团队协作</strong>
+              <small>团队编排 · 持久 Agent + 通信通道</small>
+            </a>
+
+            <a class="chapter-rail-link is-current" href="compact.html">
+              <span class="course-step">第 06 讲</span>
+              <strong>上下文压缩</strong>
+              <small>长任务生存 · 摘要旧消息，保留最近窗口</small>
+            </a>
+
+            <a class="chapter-rail-link" href="safety.html">
+              <span class="course-step">第 07 讲</span>
+              <strong>三道安全防线</strong>
+              <small>安全边界 · 黑名单 + 人工确认 + 输出截断</small>
+            </a>
+
+        <a class="chapter-rail-link" href="summary.html">
+          <span class="course-step">收束</span>
+          <strong>收束与延伸</strong>
+          <small>主线收束 · Agent 番外 · 大模型目录</small>
+        </a>
+        </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h2>页面目录</h2>
+          <nav class="toc">
+            <a class="toc-link" href="#scenario">什么时候会用到</a><a class="toc-link" href="#code">先看关键代码</a><a class="toc-link" href="#demo">再看它怎么跑</a><a class="toc-link" href="#practice">自己试一轮</a><a class="toc-link" href="#goals">这一讲会看懂什么</a><a class="toc-link" href="#talk">三个核心要点</a><a class="toc-link" href="#pitfalls">容易误解</a><a class="toc-link" href="#extend">继续深挖</a>
+          </nav>
+        </div>
+      </aside>
+
+      <article class="article-main">
+        <section class="article-hero">
+          <div class="breadcrumbs">
+            <a href="index.html">首页</a>
+            <span>/</span>
+            <a href="index.html#lessons">讲义列表</a>
+            <span>/</span>
+            <span>第 06 讲</span>
+          </div>
+          <p class="eyebrow">60 分钟讲义</p>
+          <h1>06. 上下文压缩</h1>
+          <p class="lead">本讲跳过理论铺垫，专注于一个核心问题：长任务中 Agent 为何会被自身历史拖垮，以及压缩如何缓解。</p>
+          <div class="tag-row"><span class="tag">Context Window</span><span class="tag">Compaction</span><span class="tag">Summarization</span></div>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#scenario">从场景开始</a>
+            <a class="secondary-btn" href="#code">直接看代码</a>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="scenario">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Scenario</p>
+            <h2>什么时候会用到</h2>
+          </div>
+          <p class="scenario-text">交给 Agent 一个跨几十轮的长任务，会发现它越走越慢、回答越来越含糊——背后是 messages 一直在膨胀，前面所有工具调用结果都被一次次带着走，最终撑爆 context window。</p>
+        </section>
+
+        <section class="lesson-section" id="code">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Code First</p>
+            <h2>先看关键代码</h2>
+            <p>聚焦决定行为的核心实现，再结合终端结果对照，能更直观地理解 Agent 的工作方式。</p>
+          </div>
+
+          <div class="code-group">
+
+            <article class="code-card">
+              <div class="code-card-head">
+                <div>
+                  <p class="lesson-index">上下文压缩函数</p>
+                  <h3>这是上下文压缩的核心实现：将旧历史折叠为摘要，保留当前工作现场。</h3>
+                </div>
+                <a class="source-link" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/06-compact/agent-compact.py#L119-L204">看 GitHub 行号</a>
+              </div>
+              <pre class="code-block"><code class="language-python"> 119 # ==================== 上下文压缩（核心新增） ====================
+ 120 #
+ 121 # 核心是 compact_messages()；find_recent_start() 用来避免切断 tool 调用组。
+ 122 #
+ 123 # 原理：
+ 124 #   messages = [system, user, assistant, tool, assistant, tool, ...]
+ 125 #                 ↓ 压缩后
+ 126 #   messages = [system, 摘要(包含之前所有要点), 最近 N 条消息]
+ 127
+ 128 COMPACT_THRESHOLD = 8  # 演示用低阈值：几轮工具调用后就能看到压缩
+ 129 KEEP_RECENT = 4  # 至少保留最近几条消息；遇到 tool 调用组会向前扩展
+ 130
+ 131
+ 132 def message_role(message):
+ 133     if isinstance(message, dict):
+ 134         return message.get(&quot;role&quot;, &quot;unknown&quot;)
+ 135     return getattr(message, &quot;role&quot;, &quot;unknown&quot;)
+ 136
+ 137
+ 138 def find_recent_start(messages):
+ 139     start = max(1, len(messages) - KEEP_RECENT)
+ 140     # 不要从 tool 消息中间切开；tool 必须紧跟触发它的 assistant tool_call。
+ 141     while start &gt; 1 and message_role(messages[start]) == &quot;tool&quot;:
+ 142         start -= 1
+ 143     return start
+ 144
+ 145
+ 146 def compact_messages(messages):
+ 147     &quot;&quot;&quot;
+ 148     当 messages 过长时，把旧消息压缩成一段摘要。
+ 149
+ 150     压缩前: [system, msg1, msg2, msg3, msg4, msg5, msg6, msg7, msg8]
+ 151     压缩后: [system, summary_of(msg1~msg4), ack, msg5, msg6, msg7, msg8]
+ 152     &quot;&quot;&quot;
+ 153     if len(messages) &lt;= COMPACT_THRESHOLD:
+ 154         return messages  # 没超阈值，不压缩
+ 155
+ 156     print(
+ 157         f&quot;\n[Compact] messages 数量 ({len(messages)}) 超过阈值 ({COMPACT_THRESHOLD})，开始压缩...&quot;
+ 158     )
+ 159
+ 160     system_msg = messages[0]  # system prompt 永远保留
+ 161     recent_start = find_recent_start(messages)
+ 162     old_messages = messages[1:recent_start]  # 需要被压缩的旧消息
+ 163     recent_messages = messages[recent_start:]  # 最近的消息保留原样
+ 164
+ 165     # 把旧消息拼成文本，交给 LLM 做摘要
+ 166     old_text = &quot;&quot;
+ 167     for msg in old_messages:
+ 168         role = message_role(msg)
+ 169         content = (
+ 170             msg.get(&quot;content&quot;, &quot;&quot;)
+ 171             if isinstance(msg, dict)
+ 172             else getattr(msg, &quot;content&quot;, &quot;&quot;)
+ 173         )
+ 174         if content:
+ 175             old_text += f&quot;[{role}]: {content}\n&quot;
+ 176
+ 177     # 调用 LLM 生成摘要
+ 178     summary_response = client.chat.completions.create(
+ 179         model=MODEL,
+ 180         messages=[
+ 181             {
+ 182                 &quot;role&quot;: &quot;system&quot;,
+ 183                 &quot;content&quot;: &quot;Summarize the following conversation history into a concise summary. Keep all important facts, file paths, command results, and decisions. Be concise but don&#x27;t lose critical details.&quot;,
+ 184             },
+ 185             {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: old_text},
+ 186         ],
+ 187     )
+ 188     summary = summary_response.choices[0].message.content
+ 189
+ 190     print(
+ 191         f&quot;[Compact] {len(old_messages)} 条旧消息 → 1 条摘要 (保留最近 {len(recent_messages)} 条)&quot;
+ 192     )
+ 193     print(f&quot;[Compact] 压缩后 messages: {1 + 2 + len(recent_messages)} 条\n&quot;)
+ 194
+ 195     # 重新组装：system + 摘要 + 最近消息
+ 196     return [
+ 197         system_msg,
+ 198         {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: f&quot;[Previous conversation summary]: {summary}&quot;},
+ 199         {
+ 200             &quot;role&quot;: &quot;assistant&quot;,
+ 201             &quot;content&quot;: &quot;Understood. I have the context from our previous conversation. Let me continue.&quot;,
+ 202         },
+ 203         *recent_messages,
+ 204     ]</code></pre>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="lesson-section" id="demo">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Live Demo</p>
+            <h2>再看它怎么跑</h2>
+            <p>压缩并非加分项，而是 Agent 完成长任务的关键能力。</p>
+          </div>
+          <div class="demo-box">
+            <p class="lesson-index">演示命令</p>
+            <pre class="demo-command"><code>python agent/06-compact/agent-compact.py &quot;请按步骤执行，不要合并成一个 shell 命令：1. 用 execute_bash 列出 agent 目录下的 Python 文件；2. 分别用 read_file 读取 agent/01-essence/agent-essence.py、agent/02-memory/agent-memory.py、agent/06-compact/agent-compact.py；3. 把三个文件的大致行数写入 compact-demo-report.txt。&quot;</code></pre>
+            <ul class="lesson-list"><li>默认演示阈值已调低到 <code class="inline">COMPACT_THRESHOLD = 8</code>，分步工具调用后可清晰看到 <code class="inline">[Compact]</code> 日志。</li><li>压缩会保留 system prompt 与最近几条消息；如果遇到 tool 调用组，会向前扩展边界，避免切断工具响应。</li><li>压缩本身也消耗 token，因此是一种工程折中，并非零成本能力。</li></ul>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="practice">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Try It</p>
+            <h2>自己试一轮</h2>
+            <p>默认低阈值配合分步工具调用，是最直观的压缩演示方式。</p>
+          </div>
+          <ol class="lesson-steps"><li>先直接运行演示命令，观察默认低阈值如何触发压缩。</li><li>将 <code class="inline">KEEP_RECENT</code> 从 4 改为 2，对比当前任务衔接的变化。</li><li>观察压缩前后 messages 的结构变化，而不只查看日志。</li></ol>
+        </section>
+
+        <section class="lesson-section" id="goals">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Takeaway</p>
+            <h2>这一讲会看懂什么</h2>
+          </div>
+          <ul class="lesson-list"><li>理解为何更大的 context window 并非根本解决方案。</li><li>能解释 <code class="inline">COMPACT_THRESHOLD</code> 与 <code class="inline">KEEP_RECENT</code> 的取舍。</li><li>理解“保留要点、舍弃细节”是 Agent 的必要能力。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="talk">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Key Points</p>
+            <h2>三个核心要点</h2>
+          </div>
+          <ul class="lesson-list"><li>压缩并非为了形式优雅，而是为了避免在真实任务中因上下文溢出而中断。</li><li>需要优先保留的是 system prompt 与当前工作现场。</li><li>将旧消息摘要化，本质是借助模型整理自身的历史。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="pitfalls">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Pitfalls</p>
+            <h2>容易误解</h2>
+          </div>
+          <ul class="lesson-list"><li>摘要过度会丢失关键路径与文件名。</li><li>recent window 过短会让 Agent 立即丢失工作上下文。</li><li>只截断而不压缩，仍无法支撑复杂长任务。</li></ul>
+        </section>
+
+        <section class="lesson-section" id="extend">
+          <div class="lesson-section-head">
+            <p class="eyebrow">Extend</p>
+            <h2>继续深挖</h2>
+            <p>本页未展开完整原文，可通过下方入口查看完整文章与源码。</p>
+          </div>
+          <div class="deep-links">
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/06-compact/agent-compact.md">读完整原文</a>
+            <a class="secondary-btn" href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/06-compact/agent-compact.py">看完整代码</a>
+          </div>
+        </section>
+
+        <nav class="pager">
+          <a class="pager-link" href="teams.html"><span>上一篇</span><strong>05. 团队编排</strong></a>
+          <a class="pager-link" href="safety.html"><span>下一篇</span><strong>07. 安全边界</strong></a>
+        </nav>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>本讲义保留现场分享需要的主线、演示与延伸线索；收束页、番外与完整原文请见下方入口。</p>
+      <div class="footer-links">
+        <a href="llm.html">LLM 讲义</a>
+        <a href="summary.html">收束与延伸</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent">GitHub 仓库</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/README_CN.md">系列导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/llm/README.md">大模型导读</a>
+        <a href="https://github.com/GitHubxsy/nanoAgent/blob/book/agent/build_site.py">站点生成器</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

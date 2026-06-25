@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 360" role="img" aria-label="文字进入模型前先变成 token">
+
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#172332" />
+      <stop offset="58%" stop-color="#24413d" />
+      <stop offset="100%" stop-color="#a75a2d" />
+    </linearGradient>
+    <linearGradient id="node" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff8ed" />
+      <stop offset="100%" stop-color="#f1d5b8" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-30%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#101820" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+
+  <rect width="1180" height="360" rx="34" fill="url(#bg)" />
+  <circle cx="1080" cy="46" r="160" fill="rgba(255,255,255,0.08)" />
+  <circle cx="130" cy="330" r="190" fill="rgba(242,189,115,0.14)" />
+  <text x="70" y="78" fill="#f2bd73" font-size="19" font-weight="800" letter-spacing="4">LLM VISUAL</text>
+  <text x="70" y="122" fill="#fff8ed" font-size="36" font-weight="800">文字进入模型前先变成 token</text>
+  <text x="70" y="306" fill="rgba(255,248,237,0.78)" font-size="22">Tokenizer 把自然语言、代码和符号切成 token ID；后续模型只处理这些数字。</text>
+  
+  <path d="M 262 207.0 H 284" stroke="#f2bd73" stroke-width="4" stroke-linecap="round" />
+  <path d="M 284 207.0 l -10 -8 v16 z" fill="#f2bd73" />
+  <path d="M 492 207.0 H 514" stroke="#f2bd73" stroke-width="4" stroke-linecap="round" />
+  <path d="M 514 207.0 l -10 -8 v16 z" fill="#f2bd73" />
+  <path d="M 722 207.0 H 744" stroke="#f2bd73" stroke-width="4" stroke-linecap="round" />
+  <path d="M 744 207.0 l -10 -8 v16 z" fill="#f2bd73" />
+  <path d="M 952 207.0 H 974" stroke="#f2bd73" stroke-width="4" stroke-linecap="round" />
+  <path d="M 974 207.0 l -10 -8 v16 z" fill="#f2bd73" />
+  
+  <g filter="url(#shadow)">
+    <rect x="70" y="164" width="180" height="86" rx="24" fill="url(#node)" stroke="rgba(255,255,255,0.45)" />
+    <text x="92" y="198" fill="#9b4d2c" font-size="18" font-weight="800">STEP 01</text>
+    <text x="160.0" y="226" text-anchor="middle" fill="#172332" font-size="23" font-weight="700">原始文本</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="300" y="164" width="180" height="86" rx="24" fill="url(#node)" stroke="rgba(255,255,255,0.45)" />
+    <text x="322" y="198" fill="#9b4d2c" font-size="18" font-weight="800">STEP 02</text>
+    <text x="390.0" y="226" text-anchor="middle" fill="#172332" font-size="23" font-weight="700">Tokenizer</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="530" y="164" width="180" height="86" rx="24" fill="url(#node)" stroke="rgba(255,255,255,0.45)" />
+    <text x="552" y="198" fill="#9b4d2c" font-size="18" font-weight="800">STEP 03</text>
+    <text x="620.0" y="226" text-anchor="middle" fill="#172332" font-size="23" font-weight="700">Token 列表</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="760" y="164" width="180" height="86" rx="24" fill="url(#node)" stroke="rgba(255,255,255,0.45)" />
+    <text x="782" y="198" fill="#9b4d2c" font-size="18" font-weight="800">STEP 04</text>
+    <text x="850.0" y="226" text-anchor="middle" fill="#172332" font-size="23" font-weight="700">Token ID</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="990" y="164" width="180" height="86" rx="24" fill="url(#node)" stroke="rgba(255,255,255,0.45)" />
+    <text x="1012" y="198" fill="#9b4d2c" font-size="18" font-weight="800">STEP 05</text>
+    <text x="1080.0" y="226" text-anchor="middle" fill="#172332" font-size="23" font-weight="700">进入 Embedding</text>
+  </g>
+</svg>
