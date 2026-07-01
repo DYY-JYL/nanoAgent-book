@@ -1,0 +1,83 @@
+{
+  "mcpServers": {
+    "python-agent-analyzer": {
+      "disabled": false,
+      "tools": [
+        {
+          "name": "scan_python_repo",
+          "description": "Scan a Python repository and return Python files with line counts and sizes.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "Path to a Python repository or Python file."
+              }
+            },
+            "required": ["path"]
+          }
+        },
+        {
+          "name": "summarize_python_file",
+          "description": "Summarize a Python file using AST: functions, classes, decorators, and key Agent-related calls.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "Path to a Python file."
+              }
+            },
+            "required": ["path"]
+          }
+        },
+        {
+          "name": "read_code_excerpt",
+          "description": "Read a code excerpt with line numbers.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "path": {"type": "string"},
+              "start_line": {"type": "integer"},
+              "limit": {"type": "integer"}
+            },
+            "required": ["path"]
+          }
+        },
+        {
+          "name": "extract_agent_features",
+          "description": "Extract evidence for tools schema, tool invocation, agent loop, subagent interaction, and Skills/MCP extension from a Python Agent repo.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "Path to a Python Agent repository or Python file."
+              }
+            },
+            "required": ["path"]
+          }
+        },
+        {
+          "name": "explain_agent_feature",
+          "description": "Delegate focused explanation of an Agent feature to a code-reading subagent.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "feature": {
+                "type": "string",
+                "description": "Feature to explain, such as tool invocation or subagent interaction."
+              },
+              "files": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Python files to inspect."
+              }
+            },
+            "required": ["feature", "files"]
+          }
+        }
+      ]
+    }
+  }
+}
