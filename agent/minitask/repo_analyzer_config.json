@@ -1,7 +1,9 @@
 {
   "model": "Qwen3-32B",
   "base_url": "https://oneapi.rnd.huawei.com/v1",
-  "authorization_scheme": "",
+  "temperature": 0,
+  "max_tokens": 4096,
+  "verify_ssl": false,
   "agent_home": ".agent",
   "memory_file": "repo_analyzer_memory.md",
   "max_iterations": 12,

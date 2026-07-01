@@ -40,7 +40,9 @@ agent/minitask/repo_analyzer_config.json
 {
   "model": "Qwen3-32B",
   "base_url": "https://oneapi.rnd.huawei.com/v1",
-  "authorization_scheme": ""
+  "temperature": 0,
+  "max_tokens": 4096,
+  "verify_ssl": false
 }
 ```
 
@@ -48,7 +50,8 @@ agent/minitask/repo_analyzer_config.json
 
 - 你的 curl URL 是 `https://oneapi.rnd.huawei.com/v1/chat/completions`。
 - 项目配置里的 `base_url` 只能写到 `https://oneapi.rnd.huawei.com/v1`。
-- `authorization_scheme` 为空字符串时，请求头会是 `Authorization: <OPENAI_API_KEY>`，和你的 curl 一致。
+- `verify_ssl: false` 会让 LangChain 使用 `httpx.HTTPTransport(verify=False)`，和你在公司电脑验证通过的写法一致。
+- `OPENAI_API_KEY` 会作为 `ChatOpenAI(api_key=...)` 原生参数传入。
 
 ## 交互式运行
 

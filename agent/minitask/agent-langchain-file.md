@@ -35,7 +35,9 @@ agent/minitask/agent_config.json
 {
   "model": "Qwen3-32B",
   "base_url": "https://oneapi.rnd.huawei.com/v1",
-  "authorization_scheme": "",
+  "temperature": 0,
+  "max_tokens": 4096,
+  "verify_ssl": false,
   "memory_file": "langchain_file_agent_memory.md",
   "max_iterations": 10
 }
@@ -51,10 +53,13 @@ NANO_FILE_AGENT_CONFIG=./my_config.json python agent/minitask/agent-langchain-fi
 
 注意：`base_url` 只写到 `/v1`，不要写完整的 `/v1/chat/completions`，SDK 会自动拼接。
 
-`authorization_scheme` 说明：
+公司 OneAPI 环境下，LangChain 需要 `verify_ssl: false`，代码会创建：
 
-- `"Bearer"`：发送 `Authorization: Bearer <key>`，适合 OpenAI/DeepSeek 常见兼容接口。
-- `""`：发送 `Authorization: <key>`，适合你这个 OneAPI curl 示例。
+```python
+httpx.Client(transport=httpx.HTTPTransport(verify=False))
+```
+
+`OPENAI_API_KEY` 会作为 `ChatOpenAI(api_key=...)` 原生参数传入。
 
 核心点：
 

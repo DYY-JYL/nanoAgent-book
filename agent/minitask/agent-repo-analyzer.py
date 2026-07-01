@@ -25,6 +25,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import httpx
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_openai import ChatOpenAI
 
@@ -37,7 +38,9 @@ CONFIG_FILE = Path(
 DEFAULT_CONFIG = {
     "model": "deepseek-v4-pro",
     "base_url": "https://api.deepseek.com",
-    "authorization_scheme": "Bearer",
+    "temperature": 0,
+    "max_tokens": 4096,
+    "verify_ssl": True,
     "agent_home": ".agent",
     "memory_file": "repo_analyzer_memory.md",
     "max_iterations": 12,
@@ -585,17 +588,20 @@ def load_mcp_tools() -> List[Dict[str, Any]]:
 
 
 def build_llm():
-    kwargs = {"model": MODEL}
+    kwargs = {
+        "model": MODEL,
+        "temperature": CONFIG.get("temperature", 0),
+        "max_tokens": CONFIG.get("max_tokens", 4096),
+    }
     api_key = os.environ.get("OPENAI_API_KEY")
-    auth_scheme = CONFIG.get("authorization_scheme", "Bearer")
-    if api_key and auth_scheme:
+    if api_key:
         kwargs["api_key"] = api_key
-    elif api_key:
-        kwargs["api_key"] = "dummy"
-        kwargs["default_headers"] = {"Authorization": api_key}
     base_url = os.environ.get("OPENAI_BASE_URL") or CONFIG.get("base_url")
     if base_url:
         kwargs["base_url"] = base_url
+    if CONFIG.get("verify_ssl") is False:
+        transport = httpx.HTTPTransport(verify=False)
+        kwargs["http_client"] = httpx.Client(transport=transport)
     return ChatOpenAI(**kwargs)
 
 

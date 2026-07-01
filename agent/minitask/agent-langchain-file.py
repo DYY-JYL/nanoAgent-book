@@ -20,6 +20,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
+import httpx
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
@@ -33,7 +34,9 @@ CONFIG_FILE = Path(
 DEFAULT_CONFIG = {
     "model": "gpt-4o-mini",
     "base_url": "",
-    "authorization_scheme": "Bearer",
+    "temperature": 0,
+    "max_tokens": 4096,
+    "verify_ssl": True,
     "memory_file": "langchain_file_agent_memory.md",
     "max_iterations": 10,
     "main_system_prompt": (
@@ -203,17 +206,20 @@ def replace_file_line(path: str, line_no: int, new_content: str) -> str:
 
 
 def build_llm():
-    kwargs = {"model": MODEL}
+    kwargs = {
+        "model": MODEL,
+        "temperature": CONFIG.get("temperature", 0),
+        "max_tokens": CONFIG.get("max_tokens", 4096),
+    }
     api_key = os.environ.get("OPENAI_API_KEY")
-    auth_scheme = CONFIG.get("authorization_scheme", "Bearer")
-    if api_key and auth_scheme:
+    if api_key:
         kwargs["api_key"] = api_key
-    elif api_key:
-        kwargs["api_key"] = "dummy"
-        kwargs["default_headers"] = {"Authorization": api_key}
     base_url = os.environ.get("OPENAI_BASE_URL") or CONFIG.get("base_url")
     if base_url:
         kwargs["base_url"] = base_url
+    if CONFIG.get("verify_ssl") is False:
+        transport = httpx.HTTPTransport(verify=False)
+        kwargs["http_client"] = httpx.Client(transport=transport)
     return ChatOpenAI(**kwargs)
 
 

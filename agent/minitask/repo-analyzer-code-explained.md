@@ -5,8 +5,8 @@
 当前 LLM 配置支持 OneAPI 这类非标准鉴权头：
 
 - `base_url` 写到 `/v1`，不要包含 `/chat/completions`。
-- `authorization_scheme` 为 `"Bearer"` 时发送 `Authorization: Bearer <key>`。
-- `authorization_scheme` 为空字符串时发送 `Authorization: <key>`。
+- `OPENAI_API_KEY` 作为 `ChatOpenAI(api_key=...)` 原生参数传入。
+- `verify_ssl: false` 时使用 `httpx.Client(transport=httpx.HTTPTransport(verify=False))`。
 
 核心不再是：
 

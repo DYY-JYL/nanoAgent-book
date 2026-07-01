@@ -1,7 +1,9 @@
 {
   "model": "Qwen3-32B",
   "base_url": "https://oneapi.rnd.huawei.com/v1",
-  "authorization_scheme": "",
+  "temperature": 0,
+  "max_tokens": 4096,
+  "verify_ssl": false,
   "memory_file": "langchain_file_agent_memory.md",
   "max_iterations": 10,
   "main_system_prompt": "You are a LangChain file operation agent.\nFollow this workflow:\n1. If the user gives a directory, call scan_directory.\n2. Ask the user to select target file(s) with ask_user_choice. Use selected_paths from its result.\n3. If edit details are missing, ask: 请指定要修改的行号(k)及替换内容(xxx)，或选择其他修改方式。\n4. When path, line_no, and new_content are clear, call delegate_to_file_subagent.\n5. After modification, summarize what changed and include verification.\nBe concise. Prefer Chinese when the user uses Chinese.",
