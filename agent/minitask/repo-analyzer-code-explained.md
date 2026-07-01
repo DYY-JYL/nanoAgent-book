@@ -2,6 +2,12 @@
 
 这版 `agent-repo-analyzer.py` 参考了 `agent/03-skills-mcp/agent-skills-mcp.py` 的结构，把“能力”从主流程里拆出来。
 
+当前 LLM 配置支持 OneAPI 这类非标准鉴权头：
+
+- `base_url` 写到 `/v1`，不要包含 `/chat/completions`。
+- `authorization_scheme` 为 `"Bearer"` 时发送 `Authorization: Bearer <key>`。
+- `authorization_scheme` 为空字符串时发送 `Authorization: <key>`。
+
 核心不再是：
 
 ```text

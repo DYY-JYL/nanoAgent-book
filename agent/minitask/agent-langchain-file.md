@@ -33,8 +33,9 @@ agent/minitask/agent_config.json
 
 ```json
 {
-  "model": "deepseek-v4-pro",
-  "base_url": "https://api.deepseek.com",
+  "model": "Qwen3-32B",
+  "base_url": "https://oneapi.rnd.huawei.com/v1",
+  "authorization_scheme": "",
   "memory_file": "langchain_file_agent_memory.md",
   "max_iterations": 10
 }
@@ -47,6 +48,13 @@ NANO_FILE_AGENT_CONFIG=./my_config.json python agent/minitask/agent-langchain-fi
 ```
 
 `OPENAI_API_KEY` 继续放环境变量里，不写进配置文件。
+
+注意：`base_url` 只写到 `/v1`，不要写完整的 `/v1/chat/completions`，SDK 会自动拼接。
+
+`authorization_scheme` 说明：
+
+- `"Bearer"`：发送 `Authorization: Bearer <key>`，适合 OpenAI/DeepSeek 常见兼容接口。
+- `""`：发送 `Authorization: <key>`，适合你这个 OneAPI curl 示例。
 
 核心点：
 

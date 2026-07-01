@@ -37,6 +37,7 @@ CONFIG_FILE = Path(
 DEFAULT_CONFIG = {
     "model": "deepseek-v4-pro",
     "base_url": "https://api.deepseek.com",
+    "authorization_scheme": "Bearer",
     "agent_home": ".agent",
     "memory_file": "repo_analyzer_memory.md",
     "max_iterations": 12,
@@ -585,8 +586,13 @@ def load_mcp_tools() -> List[Dict[str, Any]]:
 
 def build_llm():
     kwargs = {"model": MODEL}
-    if os.environ.get("OPENAI_API_KEY"):
-        kwargs["api_key"] = os.environ["OPENAI_API_KEY"]
+    api_key = os.environ.get("OPENAI_API_KEY")
+    auth_scheme = CONFIG.get("authorization_scheme", "Bearer")
+    if api_key and auth_scheme:
+        kwargs["api_key"] = api_key
+    elif api_key:
+        kwargs["api_key"] = "dummy"
+        kwargs["default_headers"] = {"Authorization": api_key}
     base_url = os.environ.get("OPENAI_BASE_URL") or CONFIG.get("base_url")
     if base_url:
         kwargs["base_url"] = base_url

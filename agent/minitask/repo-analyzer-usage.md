@@ -38,10 +38,17 @@ agent/minitask/repo_analyzer_config.json
 
 ```json
 {
-  "model": "deepseek-v4-pro",
-  "base_url": "https://api.deepseek.com"
+  "model": "Qwen3-32B",
+  "base_url": "https://oneapi.rnd.huawei.com/v1",
+  "authorization_scheme": ""
 }
 ```
+
+注意：
+
+- 你的 curl URL 是 `https://oneapi.rnd.huawei.com/v1/chat/completions`。
+- 项目配置里的 `base_url` 只能写到 `https://oneapi.rnd.huawei.com/v1`。
+- `authorization_scheme` 为空字符串时，请求头会是 `Authorization: <OPENAI_API_KEY>`，和你的 curl 一致。
 
 ## 交互式运行
 

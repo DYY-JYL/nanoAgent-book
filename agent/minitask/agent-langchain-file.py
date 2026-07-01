@@ -33,6 +33,7 @@ CONFIG_FILE = Path(
 DEFAULT_CONFIG = {
     "model": "gpt-4o-mini",
     "base_url": "",
+    "authorization_scheme": "Bearer",
     "memory_file": "langchain_file_agent_memory.md",
     "max_iterations": 10,
     "main_system_prompt": (
@@ -203,8 +204,13 @@ def replace_file_line(path: str, line_no: int, new_content: str) -> str:
 
 def build_llm():
     kwargs = {"model": MODEL}
-    if os.environ.get("OPENAI_API_KEY"):
-        kwargs["api_key"] = os.environ["OPENAI_API_KEY"]
+    api_key = os.environ.get("OPENAI_API_KEY")
+    auth_scheme = CONFIG.get("authorization_scheme", "Bearer")
+    if api_key and auth_scheme:
+        kwargs["api_key"] = api_key
+    elif api_key:
+        kwargs["api_key"] = "dummy"
+        kwargs["default_headers"] = {"Authorization": api_key}
     base_url = os.environ.get("OPENAI_BASE_URL") or CONFIG.get("base_url")
     if base_url:
         kwargs["base_url"] = base_url

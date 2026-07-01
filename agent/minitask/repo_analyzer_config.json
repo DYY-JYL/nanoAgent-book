@@ -1,6 +1,7 @@
 {
-  "model": "deepseek-v4-pro",
-  "base_url": "https://api.deepseek.com",
+  "model": "Qwen3-32B",
+  "base_url": "https://oneapi.rnd.huawei.com/v1",
+  "authorization_scheme": "",
   "agent_home": ".agent",
   "memory_file": "repo_analyzer_memory.md",
   "max_iterations": 12,
